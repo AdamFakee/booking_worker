@@ -1,50 +1,76 @@
-# Welcome to your Expo app 👋
+# Ứng dụng Kết nối Việc làm & Lao động Phổ thông (Worker App)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Dự án xây dựng nền tảng kết nối "Cực nhanh - Cực đơn giản" giữa Người cần việc và Người cần thợ.
 
-## Get started
+---
 
-1. Install dependencies
+## 1. Tổng quan & Chiến lược
 
-   ```bash
-   npm install
-   ```
+### 1.1 Mục tiêu cốt lõi
+- **Giai đoạn 1 (Tăng trưởng):** Miễn phí hoàn toàn. Kết nối trực tiếp qua Gọi điện/Zalo để tạo thói quen và tích lũy dữ liệu.
+- **Giai đoạn 2 (Kiếm soát & Doanh thu):** Chuyển sang mô hình Web Portal quản lý chặt chẽ, ẩn thông tin liên lạc và thu phí.
 
-2. Start the app
+### 1.2 Phạm vi sản phẩm (Giai đoạn 1)
+- **Mobile App (All-in-one):** Worker Mode & User Mode.
+- **Web Admin (Lite):** Duyệt hồ sơ và quản lý câu hỏi.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 2. Hệ thống thiết kế (Design System)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 2.1 Typography (Phông chữ)
+- **Primary Font:** `Be Vietnam Pro` (Google Fonts) - Hỗ trợ tiếng Việt hoàn hảo.
+- **Scale:**
+  - **Heading 1:** 24px (Bold) - Tên dịch vụ chính.
+  - **Heading 2:** 20px (SemiBold) - Tên thợ/Tiêu đề phụ.
+  - **Body:** 16px (Regular) - Nội dung chính (Kích thước tối thiểu cho người lớn tuổi).
+  - **Caption:** 14px (Medium) - Chú thích phụ.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 2.2 Color Palette (Bảng màu)
+- **Primary (Chủ đạo):** `#0068FF` (Xanh Zalo) - Tin cậy & Quen thuộc.
+- **Secondary (Hành động):** `#FF6600` (Cam) - Dành cho nút "Gọi ngay", "Cần gấp".
+- **Semantic:**
+  - **Success:** `#00C853` (Xanh lá) - Đang rảnh / Đã xác thực.
+  - **Error:** `#D50000` (Đỏ) - Lỗi / Cảnh báo.
+- **Surface:** `#F5F5F5` (Xám nhạt) - Làm nổi bật các thẻ (Card) trắng.
 
-## Get a fresh project
+### 2.3 Iconography (Biểu tượng)
+- **Library:** `Lucide React Native`.
+- **Style:** Stroke width = 2.
+- **Quy tắc:** Icon dịch vụ cần có background shape màu nhẹ để dễ phân biệt.
 
-When you're ready, run:
+---
 
+## 3. Chân dung người dùng
+
+- **Người lao động (Worker):** Thợ điện nước, giúp việc, thợ xây, sinh viên... Cần việc ngay, ngại thao tác phức tạp.
+- **Người tuyển dụng (User/Employer):** Hộ gia đình, chủ cửa hàng. Cần tìm thợ gấp ở gần.
+
+---
+
+## 4. Chức năng chính (Giai đoạn 1)
+
+### 4.1 Dành cho Người lao động (Worker)
+- **Đăng ký:** Số điện thoại + OTP.
+- **Sàng lọc (Visual Quiz):** Trắc nghiệm hình ảnh để tự động gắn nhãn kỹ năng.
+- **Trust Score:** Chấm điểm dựa trên độ đầy đủ của hồ sơ.
+- **Trạng thái:** Nút gạt "Đang rảnh" / "Đang bận".
+
+### 4.2 Dành cho Người tuyển dụng (User)
+- **Tìm quanh đây:** Bản đồ/Danh sách thợ gần nhất theo ngành nghề.
+- **Kết nối:** Gọi điện, Zalo, hoặc Chat nội bộ.
+
+---
+
+## 5. Hướng dẫn kỹ thuật
+
+### Khởi chạy
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Công nghệ
+- **UI:** Custom Theme (Colors & Typography)
+- **Icons:** `lucide-react-native`
+- **Fonts:** `Be Vietnam Pro` (loaded via `expo-font`)

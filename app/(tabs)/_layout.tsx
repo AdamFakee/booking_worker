@@ -1,35 +1,67 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Home, Clock, User, Newspaper } from 'lucide-react-native';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useColorScheme } from 'nativewind';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useColorScheme();
+  const activeColor = colorScheme === 'dark' ? '#0068FF' : '#0068FF'; // Keep Primary Blue
+  // Force refresh
+
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: activeColor,
+        tabBarInactiveTintColor: '#9BA1A6',
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          backgroundColor: colorScheme === 'dark' ? '#0f172a' : '#FFFFFF', // Slate-900 vs White
+          borderTopWidth: colorScheme === 'dark' ? 1 : 0,
+          borderTopColor: '#1e293b', // Slate-800
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 60,
+          paddingBottom: 10,
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'BeVietnamPro_500Medium',
+          fontSize: 12,
+        }
       }}>
+
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Trang chủ',
+          tabBarIcon: ({ color }) => <Home size={24} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="news"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Tin tức',
+          tabBarIcon: ({ color }) => <Newspaper size={24} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'Lịch sử',
+          tabBarIcon: ({ color }) => <Clock size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Tài khoản',
+          tabBarIcon: ({ color }) => <User size={24} color={color} />,
+        }}
+      />
+
     </Tabs>
   );
 }

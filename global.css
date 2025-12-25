@@ -1,0 +1,7 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* NOTE: If you see "Unknown at rule" warnings in VS Code, you can ignore them or 
+   install the "Tailwind CSS IntelliSense" extension. */
+

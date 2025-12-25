@@ -1,53 +1,63 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 import { Platform } from 'react-native';
-
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
     text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
+    background: '#F5F5F5',
+    tint: '#0068FF',
     icon: '#687076',
     tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    tabIconSelected: '#0068FF',
+    secondary: '#FF6600',
+    success: '#00C853',
+    error: '#D50000',
+    surface: '#F5F5F5',
+    card: '#FFFFFF',
   },
   dark: {
     text: '#ECEDEE',
     background: '#151718',
-    tint: tintColorDark,
+    tint: '#0068FF',
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    tabIconSelected: '#0068FF',
+    secondary: '#FF6600',
+    success: '#00C853',
+    error: '#D50000',
+    surface: '#151718',
+    card: '#25292e',
+  },
+};
+
+export const Typography = {
+  fontFamily: 'BeVietnamPro_400Regular',
+  h1: {
+    fontSize: 24,
+    fontFamily: 'BeVietnamPro_700Bold',
+  },
+  h2: {
+    fontSize: 20,
+    fontFamily: 'BeVietnamPro_600SemiBold',
+  },
+  body: {
+    fontSize: 16,
+    fontFamily: 'BeVietnamPro_400Regular',
+  },
+  caption: {
+    fontSize: 14,
+    fontFamily: 'BeVietnamPro_500Medium',
   },
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+    sans: 'BeVietnamPro_400Regular',
   },
   default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
+    sans: 'BeVietnamPro_400Regular',
   },
   web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    sans: "'Be Vietnam Pro', system-ui, sans-serif",
   },
 });
+
