@@ -1,22 +1,23 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../global.css';
 
-import { ToastProvider } from '@/context/ToastContext';
 import { AuthProvider } from '@/context/AuthContext';
+import { PostProvider } from '@/context/PostContext';
+import { ToastProvider } from '@/context/ToastContext';
 
 
 
 import {
-  useFonts,
-  BeVietnamPro_400Regular,
-  BeVietnamPro_500Medium,
-  BeVietnamPro_600SemiBold,
-  BeVietnamPro_700Bold,
+    BeVietnamPro_400Regular,
+    BeVietnamPro_500Medium,
+    BeVietnamPro_600SemiBold,
+    BeVietnamPro_700Bold,
+    useFonts,
 } from '@expo-google-fonts/be-vietnam-pro';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -46,16 +47,18 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
-        <ToastProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="worker-auth" />
-            <Stack.Screen name="worker-home" />
-            <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-          </Stack>
-          <StatusBar style="auto" />
-        </ToastProvider>
+        <PostProvider>
+          <ToastProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="worker-auth" />
+              <Stack.Screen name="worker-home" />
+              <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+            </Stack>
+            <StatusBar style="auto" />
+          </ToastProvider>
+        </PostProvider>
       </AuthProvider>
     </ThemeProvider>
   );

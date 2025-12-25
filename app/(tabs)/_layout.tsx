@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
+import { Clock, Home, User, Users } from 'lucide-react-native';
 import React from 'react';
-import { Home, Clock, User, Newspaper } from 'lucide-react-native';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { useColorScheme } from 'nativewind';
@@ -43,8 +43,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="news"
         options={{
-          title: 'Tin tức',
-          tabBarIcon: ({ color }) => <Newspaper size={24} color={color} />,
+          title: 'Cộng đồng',
+          tabBarIcon: ({ color }) => <Users size={24} color={color} />,
         }}
       />
       <Tabs.Screen
