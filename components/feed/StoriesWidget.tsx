@@ -1,6 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useVideoPlayer, VideoView } from 'expo-video';
-import { Plus } from 'lucide-react-native';
+import { Play, Plus } from 'lucide-react-native';
 import React from 'react';
 import { Image, InteractionManager, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
@@ -53,24 +52,20 @@ const MOCK_STORIES = [
 
 const StoryItemComponent = ({ story }: { story: typeof MOCK_STORIES[0] }) => {
   const router = useRouter();
-  
-  const player = useVideoPlayer(story.video, player => {
-    player.loop = true;
-    player.muted = true;
-    player.play();
-  });
 
   return (
     <TouchableOpacity 
         className="relative w-24 h-36 rounded-xl overflow-hidden bg-gray-200 dark:bg-slate-800 border border-gray-100 dark:border-gray-800"
         onPress={() => router.push({ pathname: '/feed/story', params: { id: story.id } })}
     >
-        <VideoView
-          player={player}
-          style={{ width: '100%', height: '100%' }}
-          contentFit="cover"
-          nativeControls={false}
+        <Image 
+          source={{ uri: story.avatar }} 
+          className="w-full h-full opacity-90"
+          resizeMode="cover"
         />
+        <View className="absolute inset-0 bg-black/20 justify-center items-center">
+             <Play size={20} color="white" fill="white" className="opacity-80" />
+        </View>
         <View className="absolute inset-0 bg-black/10" />
         
         {/* Avatar Overlay */}

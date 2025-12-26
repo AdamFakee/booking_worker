@@ -68,62 +68,66 @@ export default function PostDetailScreen() {
         <Text className="text-xl font-bold text-gray-900 dark:text-white">Bài viết của {post.userName}</Text>
       </View>
 
-      <FlatList
-        data={post.comments}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View className="px-4">
-            <CommentItem 
-              comment={item} 
-              onReply={handleReply} 
-              depth={0} 
-            />
-          </View>
-        )}
-        ListHeaderComponent={() => (
-           <View className="mb-4 bg-gray-50 dark:bg-slate-900/50">
-             <FeedItem post={post} isDetail />
-             <Text className="font-bold text-gray-500 px-4 py-2 border-b border-gray-100 dark:border-gray-800">
-               Bình luận ({post.comments.length})
-             </Text>
-           </View>
-        )}
-        contentContainerStyle={{ paddingBottom: 100 }}
-      />
-
-      {/* Comment Input */}
       <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-        className="absolute bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-gray-800"
+        behavior="padding"
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+        style={{ flex: 1 }}
       >
-        {replyingTo && (
-          <View className="flex-row items-center justify-between px-4 py-2 bg-gray-50 dark:bg-slate-800 border-b border-gray-100 dark:border-gray-700">
-            <Text className="text-gray-500 text-xs">
-              Đang trả lời <Text className="font-bold">{replyingTo.userName}</Text>
-            </Text>
-            <TouchableOpacity onPress={cancelReply}>
-              <X size={16} className="text-gray-500" />
-            </TouchableOpacity>
+        <FlatList
+          className="flex-1"
+          data={post.comments}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View className="px-4">
+              <CommentItem 
+                comment={item} 
+                onReply={handleReply} 
+                depth={0} 
+              />
+            </View>
+          )}
+          ListHeaderComponent={() => (
+             <View className="mb-4 bg-gray-50 dark:bg-slate-900/50">
+               <FeedItem post={post} isDetail />
+               <Text className="font-bold text-gray-500 px-4 py-2 border-b border-gray-100 dark:border-gray-800">
+                 Bình luận ({post.comments.length})
+               </Text>
+             </View>
+          )}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          showsVerticalScrollIndicator={false}
+        />
+
+        {/* Comment Input */}
+        <View className="bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-gray-800 pb-2">
+          {replyingTo && (
+            <View className="flex-row items-center justify-between px-4 py-2 bg-gray-50 dark:bg-slate-800 border-b border-gray-100 dark:border-gray-700">
+              <Text className="text-gray-500 text-xs">
+                Đang trả lời <Text className="font-bold">{replyingTo.userName}</Text>
+              </Text>
+              <TouchableOpacity onPress={cancelReply}>
+                <X size={16} className="text-gray-500" />
+              </TouchableOpacity>
+            </View>
+          )}
+          <View className="flex-row items-center gap-2 p-3">
+             <TextInput
+               ref={inputRef}
+               className="flex-1 bg-gray-100 dark:bg-slate-800 rounded-full px-4 py-2 min-h-[40px] max-h-[100px] text-gray-900 dark:text-white"
+               placeholder={replyingTo ? `Trả lời ${replyingTo.userName}...` : "Viết bình luận..."}
+               placeholderTextColor="#9ca3af"
+               multiline
+               value={commentText}
+               onChangeText={setCommentText}
+             />
+             <TouchableOpacity 
+               onPress={handleSendComment}
+               disabled={!commentText.trim()}
+               className={`${commentText.trim() ? 'bg-primary' : 'bg-gray-200 dark:bg-slate-700'} w-10 h-10 rounded-full items-center justify-center`}
+             >
+               <Send size={20} color={commentText.trim() ? 'white' : '#9ca3af'} />
+             </TouchableOpacity>
           </View>
-        )}
-        <View className="flex-row items-center gap-2 p-3">
-           <TextInput
-             ref={inputRef}
-             className="flex-1 bg-gray-100 dark:bg-slate-800 rounded-full px-4 py-2 min-h-[40px] max-h-[100px] text-gray-900 dark:text-white"
-             placeholder={replyingTo ? `Trả lời ${replyingTo.userName}...` : "Viết bình luận..."}
-             placeholderTextColor="#9ca3af"
-             multiline
-             value={commentText}
-             onChangeText={setCommentText}
-           />
-           <TouchableOpacity 
-             onPress={handleSendComment}
-             disabled={!commentText.trim()}
-             className={`${commentText.trim() ? 'bg-primary' : 'bg-gray-200 dark:bg-slate-700'} w-10 h-10 rounded-full items-center justify-center`}
-           >
-             <Send size={20} color={commentText.trim() ? 'white' : '#9ca3af'} />
-           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

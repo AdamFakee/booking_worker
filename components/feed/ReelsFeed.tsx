@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { Heart, MessageCircle, Send, Volume2, VolumeX, X } from 'lucide-react-native';
+import { Heart, MessageCircle, Play, Send, Volume2, VolumeX, X } from 'lucide-react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions, FlatList, Image, KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, TouchableOpacity, View, ViewToken } from 'react-native';
 
@@ -92,14 +92,26 @@ const ReelItemComponent = ({ item, isActive, containerHeight, onFinish, onShowCo
     player.loop = false;
   });
 
+  const [isPlaying, setIsPlaying] = useState(isActive);
+
   useEffect(() => {
-    if (isActive) {
+    setIsPlaying(isActive);
+  }, [isActive]);
+
+  useEffect(() => {
+    if (isActive && isPlaying) {
       player.play();
     } else {
       player.pause();
-      player.currentTime = 0;
+      if (!isActive) {
+          player.currentTime = 0;
+      }
     }
-  }, [isActive, player]);
+  }, [isActive, isPlaying, player]);
+
+  const togglePlay = () => {
+      setIsPlaying(prev => !prev);
+  };
 
   useEffect(() => {
     const subscription = player.addListener('playToEnd', () => {
@@ -124,13 +136,19 @@ const ReelItemComponent = ({ item, isActive, containerHeight, onFinish, onShowCo
   };
 
   return (
-    <View style={{ width, height: containerHeight, backgroundColor: 'black' }}>
+    <Pressable onPress={togglePlay} style={{ width, height: containerHeight, backgroundColor: 'black' }}>
       <VideoView
         player={player}
         style={{ width: '100%', height: '100%' }}
         contentFit="cover"
         nativeControls={false}
       />
+      
+      {!isPlaying && (
+        <View className="absolute inset-0 items-center justify-center bg-black/20">
+            <Play size={50} color="white" fill="white" className="opacity-80" />
+        </View>
+      )}
       
       {/* Overlay UI */}
       <View style={{ position: 'absolute', bottom: 20, left: 10, right: 10, paddingBottom: 20 }}>
@@ -161,7 +179,7 @@ const ReelItemComponent = ({ item, isActive, containerHeight, onFinish, onShowCo
       >
           {isMuted ? <VolumeX color="white" size={20} /> : <Volume2 color="white" size={20} />}
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 };
 const ReelItem = React.memo(ReelItemComponent);
