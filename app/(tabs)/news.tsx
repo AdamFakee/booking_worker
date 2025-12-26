@@ -2,11 +2,20 @@ import { NewsFeed } from '@/components/feed/NewsFeed';
 import { useRouter } from 'expo-router';
 import { Bell, Search } from 'lucide-react-native';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, InteractionManager, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function FeedScreen() {
   const router = useRouter();
+  const [isReady, setIsReady] = React.useState(false);
+
+  React.useEffect(() => {
+    const task = InteractionManager.runAfterInteractions(() => {
+      setIsReady(true);
+    });
+    
+    return () => task.cancel();
+  }, []);
 
   const renderHeader = () => (
     <View className="bg-white dark:bg-slate-900 pt-2 shadow-sm z-10 border-b border-gray-100 dark:border-gray-800">
@@ -47,7 +56,13 @@ export default function FeedScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-100 dark:bg-slate-950" edges={['top']}>
       {renderHeader()}
-      <NewsFeed />
+      {isReady ? (
+        <NewsFeed />
+      ) : (
+        <View className="flex-1 items-center justify-center">
+            <ActivityIndicator size="large" color="#0068FF" />
+        </View>
+      )}
     </SafeAreaView>
   );
 }

@@ -21,6 +21,10 @@ export const NewsFeed = () => {
       )}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: 20 }}
+      initialNumToRender={2}
+      maxToRenderPerBatch={2}
+      windowSize={3}
+      removeClippedSubviews={true}
     />
   );
 };

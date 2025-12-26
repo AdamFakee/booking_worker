@@ -1,9 +1,10 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Home, Bell, MessageSquare } from 'lucide-react-native';
 import { HapticTab } from '@/components/haptic-tab';
+import { Tabs } from 'expo-router';
+import { Bell, Home, MessageSquare, Users } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+
 
 const NotificationTabButton = (props: any) => {
   const { onPress, accessibilityState } = props || {};
@@ -75,6 +76,14 @@ export default function WorkerHomeLayout() {
         options={{
           title: 'Trang chủ',
           tabBarIcon: ({ color }) => <Home size={24} color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="news"
+        options={{
+          title: 'Cộng đồng',
+          tabBarIcon: ({ color }) => <Users size={24} color={color} />,
         }}
       />
 

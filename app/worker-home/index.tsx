@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, AppState, Linking, Alert, ActivityIndicator, Switch } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { Bell, Briefcase, DollarSign, Star, User, LogOut, MapPin } from 'lucide-react-native';
 import * as Location from 'expo-location';
+import { useRouter } from 'expo-router';
+import { Bell, Briefcase, LogOut, MapPin, Shield, User } from 'lucide-react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Alert, AppState, Linking, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth } from '@/context/AuthContext';
 
@@ -24,15 +24,6 @@ export default function WorkerHomeScreen() {
         return;
       }
 
-      // 2. Check Background (All Time)
-      // Note: On Expo Go, background location might behave differently or be restricted.
-      const { status: backgroundStatus } = await Location.getBackgroundPermissionsAsync();
-      
-      if (backgroundStatus !== 'granted') {
-        setHasPermission(false);
-        return;
-      }
-
       setHasPermission(true);
     } catch (error) {
       console.error("Error checking permissions:", error);
@@ -42,31 +33,16 @@ export default function WorkerHomeScreen() {
 
   const requestPermissions = async () => {
     try {
-      // Request Foreground first
+      // Request Foreground
       const { status: fgStatus } = await Location.requestForegroundPermissionsAsync();
       if (fgStatus !== 'granted') {
-         Alert.alert('Cần quyền vị trí', 'Vui lòng cấp quyền vị trí để tiếp tục.', [
+         Alert.alert('Cần quyền vị trí', 'Vui lòng cấp quyền vị trí để ứng dụng hoạt động.', [
             { text: 'Mở cài đặt', onPress: () => Linking.openSettings() }
          ]);
          return;
       }
-
-      // Request Background
-      // This often requires taking the user to settings on newer Android versions
-      const { status: bgStatus } = await Location.requestBackgroundPermissionsAsync();
       
-      if (bgStatus === 'granted') {
-         setHasPermission(true);
-      } else {
-         Alert.alert(
-            'Yêu cầu "Luôn cho phép"', 
-            'Để nhận việc tự động, bạn cần chọn "Luôn cho phép" (Allow all the time) trong cài đặt vị trí.', 
-            [
-                { text: 'Hủy', style: 'cancel' },
-                { text: 'Mở Cài đặt', onPress: () => Linking.openSettings() }
-            ]
-         );
-      }
+      setHasPermission(true);
     } catch (e) {
         console.log(e);
         Linking.openSettings();
@@ -110,7 +86,7 @@ export default function WorkerHomeScreen() {
               Yêu cầu quyền vị trí
            </Text>
            <Text className="text-center text-gray-500 dark:text-gray-400 mb-8 leading-6">
-              Để nhận công việc gần bạn, ứng dụng cần quyền truy cập vị trí <Text className="font-bold">&quot;Mọi lúc&quot; (All the time)</Text>. Vui lòng cấp quyền trong cài đặt.
+              Để nhận công việc gần bạn, ứng dụng cần quyền truy cập vị trí <Text className="font-bold">&quot;Khi dùng ứng dụng&quot; (While using app)</Text>. Vui lòng cấp quyền trong cài đặt.
            </Text>
            
            <TouchableOpacity 
@@ -181,21 +157,13 @@ export default function WorkerHomeScreen() {
              </View>
           </View>
 
-          {/* Stats Grid */}
-          <View className="flex-row justify-between mb-8">
-             <View className="w-[48%] bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
-                <View className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full items-center justify-center mb-3">
-                   <DollarSign size={20} color="#00C853" />
+          <View className="mb-8">
+             <View className="w-full bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                <View className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full items-center justify-center mb-3">
+                   <Shield size={20} color="#0068FF" />
                 </View>
-                <Text className="text-gray-500 dark:text-gray-400 text-xs">Thu nhập hôm nay</Text>
-                <Text className="text-xl font-bold text-gray-900 dark:text-white">500.000đ</Text>
-             </View>
-             <View className="w-[48%] bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
-                <View className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-full items-center justify-center mb-3">
-                   <Star size={20} color="#F59E0B" />
-                </View>
-                <Text className="text-gray-500 dark:text-gray-400 text-xs">Đánh giá trung bình</Text>
-                <Text className="text-xl font-bold text-gray-900 dark:text-white">4.9/5</Text>
+                <Text className="text-gray-500 dark:text-gray-400 text-xs">Trust Score</Text>
+                <Text className="text-xl font-bold text-gray-900 dark:text-white">Tuyệt vời (98/100)</Text>
              </View>
           </View>
 

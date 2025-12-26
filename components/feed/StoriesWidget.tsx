@@ -2,49 +2,50 @@ import { useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { Plus } from 'lucide-react-native';
 import React from 'react';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, InteractionManager, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+
 
 const MOCK_STORIES = [
   {
     id: '1',
     name: 'Lộc Tây Hair...',
-    // Use a known static test video for the first one to verify player works
-    video: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', 
+    video: require('@/assets/videos/166808-835670743_tiny.mp4'), 
     avatar: 'https://i.pravatar.cc/150?u=user1',
     isSeen: false,
   },
   {
     id: '2',
     name: 'Linh Lee',
-    video: 'https://www.pexels.com/download/video/14886038/',
+    video: require('@/assets/videos/214669_tiny.mp4'),
     avatar: 'https://i.pravatar.cc/150?u=user2',
     isSeen: false,
   },
   {
     id: '3',
     name: 'E. Tú . 25',
-    video: 'https://www.pexels.com/download/video/7583161/',
+    video: require('@/assets/videos/21964-323495891_tiny.mp4'),
     avatar: 'https://i.pravatar.cc/150?u=user3',
     isSeen: true,
   },
   {
     id: '4',
     name: 'Hoàng Minh',
-    video: 'https://www.pexels.com/download/video/35192564/',
+    video: require('@/assets/videos/254787_tiny.mp4'),
     avatar: 'https://i.pravatar.cc/150?u=user4',
     isSeen: false,
   },
   {
     id: '5',
     name: 'Thảo Trang',
-    video: 'https://www.pexels.com/download/video/35316306/',
+    video: require('@/assets/videos/270940_tiny.mp4'),
     avatar: 'https://i.pravatar.cc/150?u=user5',
     isSeen: false,
   },
   {
     id: '6',
     name: 'Minh Tuấn',
-    video: 'https://www.pexels.com/download/video/35308890/',
+    video: require('@/assets/videos/3612-172488334_tiny.mp4'),
     avatar: 'https://i.pravatar.cc/150?u=user6',
     isSeen: true,
   },
@@ -96,6 +97,24 @@ export const StoriesWidget = () => {
 
     // Only using the first 5 stories to avoid overloading the video decoders
     const displayStories = MOCK_STORIES.slice(0, 5);
+
+    const [ready, setReady] = React.useState(false);
+
+    React.useEffect(() => {
+        const task = InteractionManager.runAfterInteractions(() => {
+            setReady(true);
+        });
+
+        return () => task.cancel();
+    }, []);
+
+    if (!ready) {
+        return (
+            <View className="bg-white dark:bg-slate-900 mb-2 py-3 h-48 justify-center items-center">
+                 <Text className="text-gray-400 text-xs">Loading stories...</Text>
+            </View>
+        );
+    }
 
     return (
         <View className="bg-white dark:bg-slate-900 mb-2 py-3">

@@ -17,10 +17,7 @@ export default function VideoScreen() {
                   <ArrowLeft size={24} color="white" />
               </TouchableOpacity>
               
-              <View className="flex-row gap-4 px-4 py-1 bg-black/20 rounded-full">
-                  <Text className="text-white font-bold text-base border-b-2 border-white pb-1">Dành cho bạn</Text>
-                  <Text className="text-white/70 font-bold text-base">Đang theo dõi</Text>
-              </View>
+              <Text className="text-white font-bold text-lg">Shot Video</Text>
 
               <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full bg-black/20">
                   <Search size={24} color="white" />

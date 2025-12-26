@@ -17,7 +17,7 @@ interface Comment {
 const MOCK_REELS = [
   {
     id: '1',
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    url: require('@/assets/videos/166808-835670743_tiny.mp4'),
     user: 'TravelVibes',
     avatar: 'https://i.pravatar.cc/150?u=travel',
     desc: 'Exploring the mountains! 🏔️ #travel #nature',
@@ -27,7 +27,7 @@ const MOCK_REELS = [
   },
   {
     id: '2',
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    url: require('@/assets/videos/214669_tiny.mp4'),
     user: 'FoodieLife',
     avatar: 'https://i.pravatar.cc/150?u=food',
     desc: 'Late night snacks are the best 🍜 #food #ramen',
@@ -37,7 +37,7 @@ const MOCK_REELS = [
   },
   {
     id: '3',
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    url: require('@/assets/videos/21964-323495891_tiny.mp4'),
     user: 'FitnessPro',
     avatar: 'https://i.pravatar.cc/150?u=fitness',
     desc: 'Morning workout routine 💪 #gym #fitness',
@@ -47,7 +47,7 @@ const MOCK_REELS = [
   },
   {
     id: '4',
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    url: require('@/assets/videos/254787_tiny.mp4'),
     user: 'DanceCrew',
     avatar: 'https://i.pravatar.cc/150?u=dance',
     desc: 'New choreography! 💃 #dance #music',
@@ -57,7 +57,7 @@ const MOCK_REELS = [
   },
   {
     id: '5',
-    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+    url: require('@/assets/videos/270940_tiny.mp4'),
     user: 'NatureLover',
     avatar: 'https://i.pravatar.cc/150?u=nature2',
     desc: 'Peaceful moments ✨',
