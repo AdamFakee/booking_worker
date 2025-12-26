@@ -1,102 +1,77 @@
 import { usePosts } from '@/context/PostContext';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
-import { useVideoPlayer, VideoView } from 'expo-video';
-import { Camera, Image as ImageIcon, MapPin, Video as VideoIcon, X } from 'lucide-react-native';
+import { Camera, Image as ImageIcon, MapPin, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Alert, Image, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const VideoPreview = ({ uri }: { uri: string }) => {
-  const player = useVideoPlayer(uri, player => {
-    player.loop = true;
-    player.muted = true;
-    player.play();
-  });
-
-  return (
-    <VideoView
-      player={player}
-      style={{ width: '100%', height: '100%' }}
-      contentFit="cover"
-      nativeControls={false}
-    />
-  );
-};
 
 export default function CreatePostScreen() {
   const router = useRouter();
   const { addPost } = usePosts();
   const [content, setContent] = useState('');
-  const [selectedMedia, setSelectedMedia] = useState<{ uri: string; type: 'image' | 'video' }[]>([]);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [showMediaPicker, setShowMediaPicker] = useState(false);
-  const [pickerMediaType, setPickerMediaType] = useState<ImagePicker.MediaTypeOptions>(ImagePicker.MediaTypeOptions.Images);
   
   // Mock user
   const userAvatar = 'https://i.pravatar.cc/150?u=me';
   const userName = 'Tôi';
 
   const handlePost = () => {
-    if (content.trim() || selectedMedia.length > 0) {
-      const images = selectedMedia.filter(m => m.type === 'image').map(m => m.uri);
-      const video = selectedMedia.find(m => m.type === 'video')?.uri;
-
+    if (content.trim() || selectedImages.length > 0) {
       addPost(
         content.trim(),
-        images.length > 0 ? images : undefined,
-        video
+        selectedImages.length > 0 ? selectedImages : undefined,
+        undefined
       );
       router.back();
     }
   };
 
-  const pickMedia = async (type: ImagePicker.MediaTypeOptions, source: 'camera' | 'library') => {
+  const pickMedia = async (source: 'camera' | 'library') => {
     let result;
+    const type = ImagePicker.MediaTypeOptions.Images;
     
     if (source === 'camera') {
       const permission = await ImagePicker.requestCameraPermissionsAsync();
       if (!permission.granted) {
-        Alert.alert('Cần quyền truy cập', 'Bạn cần cấp quyền truy cập máy ảnh để chụp ảnh/quay video.');
+        Alert.alert('Cần quyền truy cập', 'Bạn cần cấp quyền truy cập máy ảnh để chụp ảnh.');
         return;
       }
       
       result = await ImagePicker.launchCameraAsync({
         mediaTypes: type,
-        allowsEditing: type === ImagePicker.MediaTypeOptions.Images, // Only edit if single image/standard camera
+        allowsEditing: true, 
         quality: 1,
       });
     } else {
       result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: type,
-        allowsMultipleSelection: type === ImagePicker.MediaTypeOptions.Images, // Allow multiple for images
-        allowsEditing: false, // Usually false when allowing multiple
+        allowsMultipleSelection: true,
+        allowsEditing: false, 
         quality: 1,
       });
     }
 
     if (!result.canceled) {
-      const newItems = result.assets.map(asset => ({
-        uri: asset.uri,
-        type: (type === ImagePicker.MediaTypeOptions.Images ? 'image' : 'video') as 'image' | 'video',
-      }));
-      setSelectedMedia(prev => [...prev, ...newItems]);
+      const newItems = result.assets.map(asset => asset.uri);
+      setSelectedImages(prev => [...prev, ...newItems]);
     }
   };
 
-  const handleMediaSelect = (type: ImagePicker.MediaTypeOptions) => {
-    setPickerMediaType(type);
+  const handleMediaSelect = () => {
     setShowMediaPicker(true);
   };
 
   const handleSourceSelect = (source: 'camera' | 'library') => {
     setShowMediaPicker(false);
     setTimeout(() => {
-        pickMedia(pickerMediaType, source);
+        pickMedia(source);
     }, 200);
   };
 
   const removeMedia = (index: number) => {
-    setSelectedMedia(prev => prev.filter((_, i) => i !== index));
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -111,10 +86,10 @@ export default function CreatePostScreen() {
         </View>
         <TouchableOpacity 
           onPress={handlePost}
-          disabled={!content.trim() && selectedMedia.length === 0}
-          className={`${content.trim() || selectedMedia.length > 0 ? 'bg-primary' : 'bg-gray-200 dark:bg-slate-800'} px-4 py-2 rounded-full`}
+          disabled={!content.trim() && selectedImages.length === 0}
+          className={`${content.trim() || selectedImages.length > 0 ? 'bg-primary' : 'bg-gray-200 dark:bg-slate-800'} px-4 py-2 rounded-full`}
         >
-          <Text className={`${content.trim() || selectedMedia.length > 0 ? 'text-white' : 'text-gray-500'} font-bold`}>Đăng</Text>
+          <Text className={`${content.trim() || selectedImages.length > 0 ? 'text-white' : 'text-gray-500'} font-bold`}>Đăng</Text>
         </TouchableOpacity>
       </View>
 
@@ -147,10 +122,10 @@ export default function CreatePostScreen() {
           />
 
           {/* Media Preview List */}
-          {selectedMedia.length > 0 && (
+          {selectedImages.length > 0 && (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4">
                <View className="flex-row gap-3">
-                  {selectedMedia.map((media, index) => (
+                  {selectedImages.map((uri, index) => (
                       <View key={index} className="relative w-40 h-40">
                           <TouchableOpacity 
                               onPress={() => removeMedia(index)}
@@ -158,17 +133,11 @@ export default function CreatePostScreen() {
                           >
                               <X size={16} color="white" />
                           </TouchableOpacity>
-                          {media.type === 'image' ? (
-                              <Image 
-                                  source={{ uri: media.uri }} 
-                                  className="w-full h-full rounded-xl bg-gray-100 dark:bg-slate-800"
-                                  resizeMode="cover"
-                              />
-                          ) : (
-                               <View className="w-full h-full rounded-xl overflow-hidden bg-gray-800 border border-gray-700">
-                                   <VideoPreview uri={media.uri} />
-                               </View>
-                          )}
+                          <Image 
+                              source={{ uri: uri }} 
+                              className="w-full h-full rounded-xl bg-gray-100 dark:bg-slate-800"
+                              resizeMode="cover"
+                          />
                       </View>
                   ))}
                </View>
@@ -181,11 +150,8 @@ export default function CreatePostScreen() {
            <View className="flex-row items-center justify-between">
               <Text className="text-gray-900 dark:text-white font-medium">Thêm vào bài viết</Text>
               <View className="flex-row gap-4">
-                 <TouchableOpacity onPress={() => handleMediaSelect(ImagePicker.MediaTypeOptions.Images)}>
+                 <TouchableOpacity onPress={handleMediaSelect}>
                      <ImageIcon size={24} color="#10b981" />
-                 </TouchableOpacity>
-                 <TouchableOpacity onPress={() => handleMediaSelect(ImagePicker.MediaTypeOptions.Videos)}>
-                     <VideoIcon size={24} color="#f43f5e" />
                  </TouchableOpacity>
                  <TouchableOpacity>
                      <MapPin size={24} color="#ef4444" />
@@ -208,7 +174,7 @@ export default function CreatePostScreen() {
         >
             <Pressable className="bg-white dark:bg-slate-900 rounded-t-3xl p-6 w-full shadow-lg" onPress={e => e.stopPropagation()}>
                 <Text className="text-xl font-bold text-gray-900 dark:text-white text-center mb-6">
-                    {pickerMediaType === ImagePicker.MediaTypeOptions.Images ? 'Đăng ảnh' : 'Đăng video'}
+                    Đăng ảnh
                 </Text>
                 
                 <View className="gap-4">
@@ -221,7 +187,7 @@ export default function CreatePostScreen() {
                         </View>
                         <View>
                              <Text className="text-base font-bold text-gray-900 dark:text-white">
-                                 {pickerMediaType === ImagePicker.MediaTypeOptions.Images ? 'Chụp ảnh mới' : 'Quay video mới'}
+                                 Chụp ảnh mới
                              </Text>
                              <Text className="text-sm text-gray-500">Sử dụng máy ảnh</Text>
                         </View>
@@ -236,7 +202,7 @@ export default function CreatePostScreen() {
                         </View>
                         <View>
                              <Text className="text-base font-bold text-gray-900 dark:text-white">Chọn từ thư viện</Text>
-                             <Text className="text-sm text-gray-500">Ảnh và video có sẵn</Text>
+                             <Text className="text-sm text-gray-500">Ảnh có sẵn</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

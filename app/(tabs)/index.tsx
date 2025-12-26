@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link, useRouter } from 'expo-router';
-import { 
-  MapPin, 
-  Zap, 
-  Droplets, 
-  Snowflake, 
-  Hammer, 
-  Search,
-  Wrench,
-  PaintBucket,
-  Truck,
-  ShieldCheck,
-  User
-} from 'lucide-react-native';
 import ServiceBottomSheet from '@/components/ServiceBottomSheet';
+import { NewsCarousel } from '@/components/home/NewsCarousel';
+import { Link, useRouter } from 'expo-router';
+import {
+    Droplets,
+    Hammer,
+    MapPin,
+    PaintBucket,
+    Search,
+    ShieldCheck,
+    Snowflake,
+    Truck,
+    User,
+    Wrench,
+    Zap
+} from 'lucide-react-native';
+import React, { useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Data for the 8-item grid
 const services = [
@@ -77,7 +78,6 @@ export default function HomeScreen() {
           </Link>
         </View>
 
-        {/* Section: Đặt dịch vụ ngay (Service Grid) */}
         <View className="px-5 mt-2">
           <Text className="text-lg font-bold text-gray-800 dark:text-white mb-4 font-sans">Dịch vụ phổ biến</Text>
           <View className="flex-row flex-wrap justify-between">
@@ -101,6 +101,8 @@ export default function HomeScreen() {
             ))}
           </View>
         </View>
+
+
 
         {/* ... (keep Map Section) ... */}
         <View className="mt-2">
@@ -147,6 +149,8 @@ export default function HomeScreen() {
              </View>
           </View>
         </View>
+
+        <NewsCarousel />
         
         {/* Bottom padding for scroll */}
         <View className="h-10" />

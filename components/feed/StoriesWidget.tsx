@@ -51,7 +51,7 @@ const MOCK_STORIES = [
   },
 ];
 
-const StoryItem = React.memo(({ story }: { story: typeof MOCK_STORIES[0] }) => {
+const StoryItemComponent = ({ story }: { story: typeof MOCK_STORIES[0] }) => {
   const router = useRouter();
   
   const player = useVideoPlayer(story.video, player => {
@@ -89,11 +89,13 @@ const StoryItem = React.memo(({ story }: { story: typeof MOCK_STORIES[0] }) => {
         </View>
     </TouchableOpacity>
   );
-});
+};
+const StoryItem = React.memo(StoryItemComponent);
 
 export const StoriesWidget = () => {
     // Mock current user
     const userAvatar = 'https://i.pravatar.cc/150?u=me';
+    const router = useRouter();
 
     // Only using the first 5 stories to avoid overloading the video decoders
     const displayStories = MOCK_STORIES.slice(0, 5);
@@ -127,7 +129,10 @@ export const StoriesWidget = () => {
                 contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}
             >
                 {/* Create New Story */}
-                <TouchableOpacity className="relative w-24 h-36 rounded-xl overflow-hidden bg-gray-100 dark:bg-slate-800 mr-1">
+                <TouchableOpacity 
+                    className="relative w-24 h-36 rounded-xl overflow-hidden bg-gray-100 dark:bg-slate-800 mr-1"
+                    onPress={() => router.push('/feed/create-story')}
+                >
                     <Image 
                         source={{ uri: userAvatar }} 
                         className="w-full h-24"
