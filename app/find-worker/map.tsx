@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, Modal, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { ArrowLeft, Star, Zap, Droplets, Snowflake, Hammer, Wrench, PaintBucket, Truck, ShieldCheck } from 'lucide-react-native';
 import * as Location from 'expo-location';
+import { useRouter } from 'expo-router';
+import { ArrowLeft, Droplets, Hammer, PaintBucket, ShieldCheck, Snowflake, Star, Truck, Wrench, Zap } from 'lucide-react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import MapView, { Marker, PROVIDER_DEFAULT, PROVIDER_GOOGLE } from 'react-native-maps';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Service Configuration (Icon & Color Mapping)
 const SERVICES_CONFIG: Record<string, { icon: any, color: string, iconColor: string }> = {
@@ -57,6 +57,7 @@ export default function WorkerMapScreen() {
   const router = useRouter();
   const [selectedWorker, setSelectedWorker] = useState<any>(null);
   const [userLocation, setUserLocation] = useState<any>(null);
+  const mapRef = useRef<MapView>(null);
 
   useEffect(() => {
     (async () => {
@@ -65,8 +66,19 @@ export default function WorkerMapScreen() {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
       setUserLocation(location.coords);
+      
+      if (location.coords && mapRef.current) {
+        mapRef.current.animateToRegion({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+        });
+      }
     })();
   }, []);
 
@@ -89,8 +101,9 @@ export default function WorkerMapScreen() {
     <View className="flex-1">
       {/* Map */}
       <MapView
+        ref={mapRef}
         style={StyleSheet.absoluteFill}
-        provider={PROVIDER_DEFAULT}
+        provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
         initialRegion={INITIAL_REGION}
         showsUserLocation={true}
         showsMyLocationButton={true}

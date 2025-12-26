@@ -5,7 +5,6 @@ import { useColorScheme } from 'nativewind';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-
 const NotificationTabButton = (props: any) => {
   const { onPress, accessibilityState } = props || {};
   const focused = accessibilityState?.selected; // Safety check

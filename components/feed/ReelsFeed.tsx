@@ -77,7 +77,7 @@ const INITIAL_COMMENTS: Record<string, Comment[]> = {
     ]
 };
 
-const ReelItem = React.memo(({ item, isActive, containerHeight, onFinish, onShowComments }: { 
+const ReelItemComponent = ({ item, isActive, containerHeight, onFinish, onShowComments }: { 
     item: typeof MOCK_REELS[0], 
     isActive: boolean, 
     containerHeight: number,
@@ -163,7 +163,8 @@ const ReelItem = React.memo(({ item, isActive, containerHeight, onFinish, onShow
       </TouchableOpacity>
     </View>
   );
-});
+};
+const ReelItem = React.memo(ReelItemComponent);
 
 export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
   const [activeReelIndex, setActiveReelIndex] = useState(0);
@@ -171,6 +172,8 @@ export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState(INITIAL_COMMENTS);
   const [inputText, setInputText] = useState('');
+  const [replyingTo, setReplyingTo] = useState<{ id: string; user: string } | null>(null);
+  const inputRef = useRef<TextInput>(null);
   
   const flatListRef = useRef<FlatList>(null);
   const isFocused = useIsFocused();
@@ -206,7 +209,7 @@ export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
           id: Date.now().toString(),
           user: 'Bạn', // Simplified current user
           avatar: 'https://i.pravatar.cc/150?u=me',
-          content: inputText.trim(),
+          content: replyingTo ? `@${replyingTo.user} ${inputText.trim()}` : inputText.trim(),
           time: 'Vừa xong'
       };
 
@@ -215,6 +218,12 @@ export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
           [activeReelId]: [newComment, ...(prev[activeReelId] || [])]
       }));
       setInputText('');
+      setReplyingTo(null);
+  };
+
+  const handleReply = (comment: Comment) => {
+    setReplyingTo({ id: comment.id, user: comment.user });
+    inputRef.current?.focus();
   };
 
   return (
@@ -257,26 +266,27 @@ export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
         visible={showComments}
         onRequestClose={() => setShowComments(false)}
       >
-        <KeyboardAvoidingView 
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1"
+        <Pressable 
+            className="flex-1 bg-black/50 justify-end"
+            onPress={() => setShowComments(false)}
         >
             <Pressable 
-                className="flex-1 bg-black/50 justify-end"
-                onPress={() => setShowComments(false)}
+                className="bg-white dark:bg-slate-900 rounded-t-3xl w-full h-[60%] flex text-gray-900 dark:text-white overflow-hidden"
+                onPress={e => e.stopPropagation()}
             >
-                <Pressable 
-                    className="bg-white dark:bg-slate-900 rounded-t-3xl w-full h-[60%] flex text-gray-900 dark:text-white"
-                    onPress={e => e.stopPropagation()}
+                <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+                    <Text className="text-gray-900 dark:text-white font-bold text-lg text-center flex-1">
+                        Bình luận ({currentComments.length})
+                    </Text>
+                    <TouchableOpacity onPress={() => setShowComments(false)}>
+                        <X size={24} className="text-gray-500" />
+                    </TouchableOpacity>
+                </View>
+
+                <KeyboardAvoidingView 
+                    behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                    style={{ flex: 1 }}
                 >
-                    <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
-                        <Text className="text-gray-900 dark:text-white font-bold text-lg text-center flex-1">
-                            Bình luận ({currentComments.length})
-                        </Text>
-                        <TouchableOpacity onPress={() => setShowComments(false)}>
-                            <X size={24} className="text-gray-500" />
-                        </TouchableOpacity>
-                    </View>
 
                     {currentComments.length === 0 ? (
                         <View className="flex-1 items-center justify-center p-4">
@@ -296,10 +306,24 @@ export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
                                             <Text className="text-gray-500 text-xs">{item.time}</Text>
                                         </View>
                                         <Text className="text-gray-700 dark:text-gray-300 text-sm mt-0.5">{item.content}</Text>
+                                        <TouchableOpacity onPress={() => handleReply(item)} className="mt-1">
+                                            <Text className="text-xs font-semibold text-gray-500">Trả lời</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             )}
                         />
+                    )}
+
+                    {replyingTo && (
+                        <View className="flex-row items-center justify-between px-4 py-2 bg-gray-50 dark:bg-slate-800 border-t border-gray-100 dark:border-slate-700">
+                            <Text className="text-sm text-gray-500">
+                                Đang trả lời <Text className="font-bold text-gray-700 dark:text-gray-300">{replyingTo.user}</Text>
+                            </Text>
+                            <TouchableOpacity onPress={() => setReplyingTo(null)}>
+                                <X size={16} className="text-gray-400" />
+                            </TouchableOpacity>
+                        </View>
                     )}
 
                     <View className="border-t border-gray-100 dark:border-gray-800 p-3 bg-white dark:bg-slate-900 pb-5">
@@ -310,7 +334,8 @@ export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
                             />
                             <View className="flex-1 bg-gray-100 dark:bg-slate-800 rounded-full px-4 py-2 flex-row items-center border border-gray-200 dark:border-slate-700">
                                 <TextInput 
-                                    placeholder="Thêm bình luận..." 
+                                    ref={inputRef}
+                                    placeholder={replyingTo ? `Trả lời ${replyingTo.user}...` : "Thêm bình luận..."}
                                     placeholderTextColor="#9ca3af"
                                     className="flex-1 text-gray-900 dark:text-white mr-2"
                                     value={inputText}
@@ -322,9 +347,9 @@ export const ReelsFeed = ({ isActiveTab }: { isActiveTab: boolean }) => {
                             </View>
                         </View>
                     </View>
-                </Pressable>
+                </KeyboardAvoidingView>
             </Pressable>
-        </KeyboardAvoidingView>
+        </Pressable>
       </Modal>
     </View>
   );
