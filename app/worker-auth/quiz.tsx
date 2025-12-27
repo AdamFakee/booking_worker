@@ -1,8 +1,8 @@
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { AlertTriangle, CheckCircle } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { CheckCircle, AlertTriangle } from 'lucide-react-native';
 
 import { useAuth } from '@/context/AuthContext';
 // ... imports
@@ -17,7 +17,7 @@ const MOCK_QUIZ = [
 
 export default function WorkerQuizScreen() {
   const router = useRouter();
-  const { signIn } = useAuth();
+  const { user, signIn, registerAsWorker } = useAuth();
   const { job } = useLocalSearchParams();
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]); 
@@ -51,8 +51,17 @@ export default function WorkerQuizScreen() {
 
   const finish = async () => {
     setShowResult(false);
-    await signIn('worker');
-    router.replace('/worker-home');
+    
+    // If user is not logged in yet, sign them in first
+    if (!user.isLoggedIn) {
+      await signIn();
+    }
+    
+    // Register as worker (after KYC verification in real app)
+    await registerAsWorker();
+    
+    // Redirect to main app (tabs) instead of separate worker-home
+    router.replace('/(tabs)');
   };
 
   return (

@@ -1,26 +1,25 @@
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { User, Hammer } from 'lucide-react-native';
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'expo-router';
+import { Hammer, User } from 'lucide-react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RoleSelectionScreen() {
   const router = useRouter();
-  const { role, isLoading, signIn } = useAuth();
+  const { user, isLoading, signIn } = useAuth();
 
   useEffect(() => {
     if (isLoading) return;
     
-    if (role === 'customer') {
+    // If user is already logged in, redirect to main app
+    if (user.isLoggedIn) {
       router.replace('/(tabs)');
-    } else if (role === 'worker') {
-      router.replace('/worker-home');
     }
-  }, [role, isLoading]);
+  }, [user.isLoggedIn, isLoading, router]);
 
-  const handleCustomerLogin = () => {
-    signIn('customer');
+  const handleLogin = () => {
+    signIn(); // Login as customer (default)
     router.replace('/(tabs)');
   };
 
@@ -54,7 +53,7 @@ export default function RoleSelectionScreen() {
         {/* Customer Button */}
         <TouchableOpacity 
           className="flex-row items-center p-5 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800 active:scale-95 transition-transform"
-          onPress={handleCustomerLogin}
+          onPress={handleLogin}
           activeOpacity={0.8}
         >
           <View className="w-14 h-14 bg-blue-500 rounded-full items-center justify-center mr-4 shadow-md shadow-blue-300">

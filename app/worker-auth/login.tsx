@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Phone } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth } from '@/context/AuthContext';
 
 export default function WorkerLoginScreen() {
   const router = useRouter();
-  const { signIn } = useAuth();
+  const { user, signIn, registerAsWorker } = useAuth();
   const [phone, setPhone] = useState('');
 
   const handleSendCode = () => {
@@ -18,8 +18,16 @@ export default function WorkerLoginScreen() {
   };
 
   const handleSkipDemo = async () => {
-      await signIn('worker');
-      router.replace('/worker-home');
+    // If user is not logged in yet, sign them in first
+    if (!user.isLoggedIn) {
+      await signIn();
+    }
+    
+    // Register as worker (skip KYC for demo)
+    await registerAsWorker();
+    
+    // Redirect to main app (tabs) instead of separate worker-home
+    router.replace('/(tabs)');
   };
 
   return (

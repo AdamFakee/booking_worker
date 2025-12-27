@@ -1,5 +1,6 @@
 import ServiceBottomSheet from '@/components/ServiceBottomSheet';
 import { NewsCarousel } from '@/components/home/NewsCarousel';
+import { useAuth } from '@/context/AuthContext';
 import { Link, useRouter } from 'expo-router';
 import {
   Hammer,
@@ -14,7 +15,7 @@ import {
   Zap
 } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Data for the 8-item grid - Labor & Employment Categories
@@ -43,6 +44,7 @@ const workersAround = [
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { user, toggleWorkerActive } = useAuth();
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
 
   return (
@@ -65,6 +67,34 @@ export default function HomeScreen() {
               <Text className="text-amber-700 dark:text-amber-400 font-bold text-caption">0 điểm</Text>
             </View>
           </View>
+
+          {/* Worker Activation Toggle - Only shown if user is registered as worker */}
+          {user.isWorker && (
+            <View className={`mb-4 rounded-2xl p-5 shadow-lg ${user.isWorkerActive ? 'bg-blue-500 shadow-blue-200' : 'bg-gray-400 dark:bg-gray-600 shadow-gray-200'}`}>
+              <View className="flex-row items-center justify-between">
+                <View className="flex-1 mr-4">
+                  <Text className={`text-xs mb-1 font-medium ${user.isWorkerActive ? 'text-blue-100' : 'text-gray-100'}`}>
+                    Trạng thái hoạt động
+                  </Text>
+                  <Text className="text-xl font-bold text-white mb-1">
+                    {user.isWorkerActive ? 'Đang nhận việc' : 'Tạm nghỉ'}
+                  </Text>
+                  <Text className={`text-sm ${user.isWorkerActive ? 'text-blue-100' : 'text-gray-100'}`}>
+                    {user.isWorkerActive 
+                      ? 'Sẵn sàng nhận việc mới' 
+                      : 'Bật để bắt đầu nhận việc'}
+                  </Text>
+                </View>
+                <Switch
+                  value={user.isWorkerActive}
+                  onValueChange={toggleWorkerActive}
+                  trackColor={{ false: 'rgba(255, 255, 255, 0.3)', true: 'rgba(255, 255, 255, 0.5)' }}
+                  thumbColor="#FFFFFF"
+                  ios_backgroundColor="rgba(255, 255, 255, 0.3)"
+                />
+              </View>
+            </View>
+          )}
 
           {/* Search Bar */}
           <Link href="/search" asChild>

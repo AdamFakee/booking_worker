@@ -1,83 +1,82 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type UserRole = 'customer' | 'worker' | null;
-
-interface AuthContextType {
-  role: UserRole;
-  isLoading: boolean;
-  signIn: (role: UserRole) => Promise<void>;
-  signOut: () => Promise<void>;
+interface UserData {
+  isLoggedIn: boolean;
+  isWorker: boolean; // Has registered as a worker (verified ID)
+  isWorkerActive: boolean; // Worker mode is currently active
 }
 
+interface AuthContextType {
+  user: UserData;
+  isLoading: boolean;
+  signIn: () => Promise<void>;
+  signOut: () => Promise<void>;
+  registerAsWorker: () => Promise<void>; // After ID verification
+  toggleWorkerActive: () => Promise<void>; // Toggle worker active status
+}
+
+const defaultUserData: UserData = {
+  isLoggedIn: false,
+  isWorker: false,
+  isWorkerActive: false,
+};
+
 const AuthContext = createContext<AuthContextType>({
-  role: null,
+  user: defaultUserData,
   isLoading: true,
   signIn: async () => {},
   signOut: async () => {},
+  registerAsWorker: async () => {},
+  toggleWorkerActive: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [role, setRole] = useState<UserRole>(null);
+  const [user, setUser] = useState<UserData>(defaultUserData);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const loadRole = async () => {
+    const loadUserData = async () => {
       try {
-        const storedRole = await AsyncStorage.getItem('user_role');
-        if (storedRole) {
-          setRole(storedRole as UserRole);
+        const storedUserData = await AsyncStorage.getItem('user_data');
+        if (storedUserData) {
+          setUser(JSON.parse(storedUserData));
         }
       } catch (e) {
-        console.error('Failed to load role', e);
+        console.error('Failed to load user data', e);
       } finally {
         setIsLoading(false);
       }
     };
-    loadRole();
+    loadUserData();
   }, []);
 
-  /* 
-  useEffect(() => {
-    if (isLoading) return;
-
-    // const inAuthGroup = segments[0] === 'worker-auth';
-    const inTabs = segments[0] === '(tabs)';
-    const inWorkerHome = segments[0] === 'worker-home';
-
-    if (!role && inTabs) {
-       // Customer can access tabs? Maybe not if strict auth.
-       // For now, let's say if NOT logged in, go to index.
-       router.replace('/');
-    } else if (role === 'customer' && !inTabs) {
-       // Redirect customer to tabs if not there
-       router.replace('/(tabs)');
-    } else if (role === 'worker' && !inWorkerHome) {
-       // Redirect worker to home if not there
-       // router.replace('/worker-home');
+  const saveUserData = async (userData: UserData) => {
+    try {
+      await AsyncStorage.setItem('user_data', JSON.stringify(userData));
+      setUser(userData);
+    } catch (error) {
+      console.error('Failed to save user data', error);
     }
-  }, [role, isLoading, segments]);
-  */
+  };
 
-  // Note: The above auto-redirect logic can be tricky with complex flows. 
-  // Simplified approach: Just expose signIn/signOut and let components navigate.
-  // We'll keep the basic persistence logic but avoid aggressive redirects here to prevent loops during dev.
-
-  const signIn = async (newRole: UserRole) => {
-    setRole(newRole);
-    if (newRole) {
-        await AsyncStorage.setItem('user_role', newRole);
-    }
+  const signIn = async () => {
+    const newUserData: UserData = {
+      isLoggedIn: true,
+      isWorker: false,
+      isWorkerActive: false,
+    };
+    await saveUserData(newUserData);
   };
 
   const signOut = async () => {
     try {
-      await AsyncStorage.removeItem('user_role');
-      setRole(null);
+      await AsyncStorage.removeItem('user_data');
+      setUser(defaultUserData);
       console.log('User signed out, redirecting to /');
       router.replace('/' as any);
     } catch (error) {
@@ -85,8 +84,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const registerAsWorker = async () => {
+    // Called after ID verification is complete
+    const newUserData: UserData = {
+      ...user,
+      isWorker: true,
+      isWorkerActive: false, // Default to inactive
+    };
+    await saveUserData(newUserData);
+  };
+
+  const toggleWorkerActive = async () => {
+    if (!user.isWorker) {
+      console.warn('User is not registered as a worker');
+      return;
+    }
+    const newUserData: UserData = {
+      ...user,
+      isWorkerActive: !user.isWorkerActive,
+    };
+    await saveUserData(newUserData);
+  };
+
   return (
-    <AuthContext.Provider value={{ role, isLoading, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, isLoading, signIn, signOut, registerAsWorker, toggleWorkerActive }}>
       {children}
     </AuthContext.Provider>
   );

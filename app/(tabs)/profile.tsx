@@ -1,18 +1,18 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { 
-  User, 
-  Settings, 
-  HelpCircle, 
-  FileText, 
-  MessageSquare, 
-  Info, 
-  Briefcase, 
-  ChevronRight,
-  LogOut 
+import {
+    Briefcase,
+    ChevronRight,
+    FileText,
+    HelpCircle,
+    Info,
+    LogOut,
+    MessageSquare,
+    Settings,
+    User
 } from 'lucide-react-native';
+import React from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth } from '@/context/AuthContext';
 
@@ -77,7 +77,7 @@ const MENU_ITEMS = [
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   const hanldeSignOut = () => {
     signOut();
@@ -91,14 +91,51 @@ export default function ProfileScreen() {
         <View className="w-16 h-16 rounded-full bg-gray-200 dark:bg-slate-800 items-center justify-center mr-4 border border-gray-100 dark:border-gray-700">
           <User size={32} color="#9BA1A6" />
         </View>
-        <View>
-          <Text className="text-h2 font-bold text-gray-900 dark:text-white">Khách hàng</Text>
+        <View className="flex-1">
+          <Text className="text-h2 font-bold text-gray-900 dark:text-white">
+            {user.isWorker ? 'Khách hàng & Thợ' : 'Khách hàng'}
+          </Text>
           <Text className="text-body text-gray-500 dark:text-gray-400">0866904922</Text>
+          {user.isWorker && (
+            <View className="flex-row items-center mt-1">
+              <View className={`w-2 h-2 rounded-full mr-1.5 ${user.isWorkerActive ? 'bg-green-500' : 'bg-gray-400'}`} />
+              <Text className="text-xs text-gray-600 dark:text-gray-400">
+                {user.isWorkerActive ? 'Đang hoạt động' : 'Không hoạt động'}
+              </Text>
+            </View>
+          )}
         </View>
       </View>
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-5 pt-6">
+          {/* Worker Registration CTA - Only shown if user is NOT a worker */}
+          {!user.isWorker && (
+            <TouchableOpacity 
+              className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border-2 border-amber-400 dark:border-amber-600 p-5 mb-6 shadow-lg shadow-amber-200/50"
+              onPress={() => router.push('/worker-auth/register' as any)}
+              activeOpacity={0.8}
+            >
+              <View className="flex-row items-center mb-3">
+                <View className="w-12 h-12 bg-amber-500 rounded-full items-center justify-center mr-3">
+                  <Briefcase size={24} color="white" />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                    Trở thành thợ
+                  </Text>
+                  <Text className="text-sm text-amber-700 dark:text-amber-400 font-semibold">
+                    Kiếm thêm thu nhập 💰
+                  </Text>
+                </View>
+                <ChevronRight size={24} color="#F59E0B" />
+              </View>
+              <Text className="text-sm text-gray-600 dark:text-gray-300 leading-5">
+                Đăng ký làm thợ để nhận việc và kiếm thêm thu nhập. Cần xác thực căn cước công dân để đảm bảo uy tín.
+              </Text>
+            </TouchableOpacity>
+          )}
+
           <View className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden mb-6 transition-colors">
             {MENU_ITEMS.map((item, index) => (
               <TouchableOpacity 
