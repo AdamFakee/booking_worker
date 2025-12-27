@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import {
+    Bell,
     Briefcase,
     ChevronRight,
     FileText,
@@ -17,6 +18,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@/context/AuthContext';
 
 const MENU_ITEMS = [
+  { 
+    id: 'notifications', 
+    title: 'Thông báo', 
+    icon: Bell, 
+    color: '#EF4444', 
+    bg: '#FEE2E2',
+    route: '/profile/notifications' 
+  },
   { 
     id: 'account', 
     title: 'Thông tin tài khoản', 

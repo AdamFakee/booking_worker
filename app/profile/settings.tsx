@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Switch } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { 
-  ArrowLeft, 
-  Moon, 
-  Sun, 
-  Globe, 
-  Bell, 
-  Smartphone,
-  ChevronRight
+import {
+    ArrowLeft,
+    Bell,
+    ChevronRight,
+    Globe,
+    Moon,
+    Smartphone,
+    Sun
 } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useColorScheme } from 'nativewind';
 
 export default function SettingsScreen() {
   const router = useRouter();
-  const { colorScheme, toggleColorScheme, setColorScheme } = useColorScheme();
+  const { colorScheme, toggleColorScheme } = useColorScheme();
   
   // States
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [language, setLanguage] = useState<'vi' | 'en'>('vi');
 
   return (
@@ -79,21 +78,20 @@ export default function SettingsScreen() {
         {/* Section: Notifications */}
         <Text className="text-gray-500 dark:text-gray-400 font-bold uppercase text-xs mb-3 px-2">Thông báo</Text>
         <View className="bg-white dark:bg-slate-900 rounded-2xl mb-6 overflow-hidden border border-gray-100 dark:border-gray-800">
-          <View className="flex-row items-center p-4">
+          <TouchableOpacity 
+            className="flex-row items-center p-4"
+            onPress={() => router.push('/profile/notification-settings' as any)}
+            activeOpacity={0.7}
+          >
              <View className="w-9 h-9 bg-red-50 dark:bg-red-900/30 rounded-full items-center justify-center mr-3">
                <Bell size={18} color="#D32F2F" />
              </View>
              <View className="flex-1">
-               <Text className="text-body font-medium text-gray-800 dark:text-gray-200">Thông báo đẩy</Text>
-               <Text className="text-caption text-gray-500 dark:text-gray-400">Nhận tin tức ưu đãi, cập nhật đơn hàng</Text>
+               <Text className="text-body font-medium text-gray-800 dark:text-gray-200">Cài đặt thông báo</Text>
+               <Text className="text-caption text-gray-500 dark:text-gray-400">Quản lý thông báo hệ thống, tin nhắn...</Text>
              </View>
-             <Switch 
-               value={notificationsEnabled} 
-               onValueChange={setNotificationsEnabled}
-               trackColor={{ false: "#e0e0e0", true: "#00C853" }}
-               thumbColor={"#FFFFFF"}
-             />
-          </View>
+             <ChevronRight size={20} color="#9BA1A6" />
+          </TouchableOpacity>
         </View>
 
         {/* Section: Build Info */}
