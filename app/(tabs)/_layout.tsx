@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Clock, Home, MessageCircle, User, Users } from 'lucide-react-native';
 import React from 'react';
+import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { useColorScheme } from 'nativewind';
@@ -24,12 +25,14 @@ export default function TabLayout() {
           borderTopColor: '#1e293b', // Slate-800
           elevation: 0,
           shadowOpacity: 0,
-          height: 60,
-          paddingBottom: 10,
+          height: Platform.OS === 'android' ? 70 : 60, // Taller on Android
+          paddingBottom: Platform.OS === 'android' ? 15 : 10, // More padding on Android
+          paddingTop: 8,
         },
         tabBarLabelStyle: {
           fontFamily: 'BeVietnamPro_500Medium',
           fontSize: 12,
+          marginBottom: Platform.OS === 'android' ? 5 : 0,
         }
       }}>
 

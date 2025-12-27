@@ -78,7 +78,7 @@ export default function HomeScreen() {
         </View>
 
         <View className="px-5 mt-2">
-          <Text className="text-lg font-bold text-gray-800 dark:text-white mb-4 font-sans">Dịch vụ phổ biến</Text>
+          <Text className="text-lg font-bold text-gray-800 dark:text-white mb-4 font-sans">Thợ & lao động phổ biến</Text>
           <View className="flex-row flex-wrap justify-between">
             {services.map((service) => (
               <TouchableOpacity 
