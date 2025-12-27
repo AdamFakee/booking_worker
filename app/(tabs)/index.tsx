@@ -3,6 +3,7 @@ import { NewsCarousel } from '@/components/home/NewsCarousel';
 import { useAuth } from '@/context/AuthContext';
 import { Link, useRouter } from 'expo-router';
 import {
+  Bell,
   Hammer,
   MapPin,
   PaintBucket,
@@ -108,7 +109,23 @@ export default function HomeScreen() {
         </View>
 
         <View className="px-5 mt-2">
-          <Text className="text-lg font-bold text-gray-800 dark:text-white mb-4 font-sans">Thợ & lao động phổ biến</Text>
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Thợ & lao động phổ biến</Text>
+            
+            {/* Notification Bell with Badge */}
+            <TouchableOpacity 
+              onPress={() => router.push('/profile/notifications' as any)}
+              className="relative"
+            >
+              <View className="w-10 h-10 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                <Bell size={20} color="#0068FF" strokeWidth={2.5} />
+              </View>
+              {/* Red Badge for unread notifications */}
+              <View className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full items-center justify-center border-2 border-white dark:border-slate-950">
+                <Text className="text-[10px] font-bold text-white">2</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
           <View className="flex-row flex-wrap justify-between">
             {services.map((service) => (
               <TouchableOpacity 
