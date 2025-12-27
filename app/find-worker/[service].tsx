@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Image, Linking } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft, MapPin, Star, Phone, MessageCircle, ShieldCheck, Search, Map } from 'lucide-react-native';
+import { ArrowLeft, MapPin, Search, ShieldCheck, Star } from 'lucide-react-native';
+import React from 'react';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Mock Data for Workers
 const MOCK_WORKERS = [

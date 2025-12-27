@@ -9,7 +9,7 @@ const MOCK_NEWS_LIST = [
     id: '1',
     title: 'Cách sửa ống nước bị rò rỉ tại nhà đơn giản',
     image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-    category: 'Mẹo vặt',
+    category: 'Tin tức',
     date: '20/12/2024',
     readTime: '5 phút',
     desc: 'Hướng dẫn chi tiết cách xử lý nhanh các sự cố rò rỉ nước thường gặp mà không cần gọi thợ.'
@@ -111,7 +111,7 @@ export default function NewsListScreen() {
                 <TouchableOpacity onPress={() => router.back()} className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800 -ml-2">
                      <ArrowLeft size={24} className="text-gray-900 dark:text-white" />
                 </TouchableOpacity>
-                <Text className="text-lg font-bold text-gray-900 dark:text-white ml-2">Tin tức & Mẹo vặt</Text>
+                <Text className="text-lg font-bold text-gray-900 dark:text-white ml-2">Tin tức & Tuyển dụng</Text>
             </View>
 
             <View className="px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">

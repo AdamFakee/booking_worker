@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Clock, Home, User, Users } from 'lucide-react-native';
+import { Clock, Home, MessageCircle, User, Users } from 'lucide-react-native';
 import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
@@ -45,6 +45,13 @@ export default function TabLayout() {
         options={{
           title: 'Cộng đồng',
           tabBarIcon: ({ color }) => <Users size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          title: 'Tin nhắn',
+          tabBarIcon: ({ color }) => <MessageCircle size={24} color={color} />,
         }}
       />
       <Tabs.Screen

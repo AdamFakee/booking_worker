@@ -8,7 +8,7 @@ const MOCK_NEWS = [
     id: '1',
     title: 'Cách sửa ống nước bị rò rỉ tại nhà đơn giản',
     image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-    category: 'Mẹo vặt',
+    category: 'Tin tức',
     date: '20/12',
     readTime: '5 phút'
   },
@@ -36,7 +36,7 @@ export const NewsCarousel = () => {
   return (
     <View className="mt-6 mb-2">
       <View className="px-5 mb-3 flex-row justify-between items-center">
-        <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Tin tức & Mẹo vặt</Text>
+        <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Tin tức & Tuyển dụng</Text>
         <TouchableOpacity 
             className="flex-row items-center"
             onPress={() => router.push('/news')}

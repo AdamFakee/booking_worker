@@ -2,32 +2,31 @@ import ServiceBottomSheet from '@/components/ServiceBottomSheet';
 import { NewsCarousel } from '@/components/home/NewsCarousel';
 import { Link, useRouter } from 'expo-router';
 import {
-    Droplets,
-    Hammer,
-    MapPin,
-    PaintBucket,
-    Search,
-    ShieldCheck,
-    Snowflake,
-    Truck,
-    User,
-    Wrench,
-    Zap
+  Hammer,
+  MapPin,
+  PaintBucket,
+  Search,
+  ShieldCheck,
+  Snowflake,
+  Truck,
+  User,
+  Wrench,
+  Zap
 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// Data for the 8-item grid
+// Data for the 8-item grid - Labor & Employment Categories
 const services = [
-  { id: '1', title: 'Điện', icon: Zap, color: '#E3F2FD', iconColor: '#2196F3' }, // Blue
-  { id: '2', title: 'Nước', icon: Droplets, color: '#E0F7FA', iconColor: '#00BCD4' }, // Cyan
+  { id: '1', title: 'Điện nước', icon: Zap, color: '#E3F2FD', iconColor: '#2196F3' }, // Blue
+  { id: '2', title: 'Công nhân', icon: Hammer, color: '#FFF3E0', iconColor: '#FF9800' }, // Orange
   { id: '3', title: 'Điện lạnh', icon: Snowflake, color: '#E8F5E9', iconColor: '#4CAF50' }, // Green
-  { id: '4', title: 'Xây sửa', icon: Hammer, color: '#FFF3E0', iconColor: '#FF9800' }, // Orange
-  { id: '5', title: 'Thông nghẹt', icon: Wrench, color: '#F3E5F5', iconColor: '#9C27B0' }, // Purple
-  { id: '6', title: 'Sơn nhà', icon: PaintBucket, color: '#FCE4EC', iconColor: '#E91E63' }, // Pink
-  { id: '7', title: 'Chuyển nhà', icon: Truck, color: '#EFEBE9', iconColor: '#795548' }, // Brown
-  { id: '8', title: 'Khác', icon: ShieldCheck, color: '#FAFAFA', iconColor: '#9E9E9E' }, // Grey
+  { id: '4', title: 'Giúp việc, bán hàng', icon: User, color: '#FCE4EC', iconColor: '#E91E63' }, // Pink
+  { id: '5', title: 'Sinh viên', icon: PaintBucket, color: '#E0F7FA', iconColor: '#00BCD4' }, // Cyan
+  { id: '6', title: 'Part-time', icon: Wrench, color: '#F3E5F5', iconColor: '#9C27B0' }, // Purple
+  { id: '7', title: 'Phổ thông', icon: Truck, color: '#EFEBE9', iconColor: '#795548' }, // Brown
+  { id: '8', title: '...', icon: ShieldCheck, color: '#FAFAFA', iconColor: '#9E9E9E' }, // Grey - More options
 ];
 
 // Mock Data for Map Markers
@@ -54,7 +53,7 @@ export default function HomeScreen() {
         <View className="px-5 pt-2 pb-4">
           <View className="flex-row justify-between items-center mb-4">
             <View className="flex-row items-center">
-              <Text className="text-h2 font-bold text-gray-800 dark:text-white mr-2">Worker, xin chào</Text>
+              <Text className="text-h2 font-bold text-gray-800 dark:text-white mr-2">Lao động và việc làm, xin chào</Text>
               <Text className="text-xl">👋</Text>
             </View>
             
@@ -72,7 +71,7 @@ export default function HomeScreen() {
             <TouchableOpacity className="flex-row items-center bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-full px-4 h-12 shadow-sm">
               <Search size={20} color="#9BA1A6" />
               <Text className="flex-1 ml-3 font-medium text-body text-gray-400 dark:text-gray-500">
-                Tìm hơn 100+ dịch vụ...
+                Tìm lao động & việc làm...
               </Text>
             </TouchableOpacity>
           </Link>
@@ -94,7 +93,11 @@ export default function HomeScreen() {
                 >
                   <service.icon size={24} color={service.iconColor} strokeWidth={2} />
                 </View>
-                <Text className="text-xs text-center font-medium text-gray-700 dark:text-gray-300 leading-4">
+                <Text 
+                  className="text-xs text-center font-medium text-gray-700 dark:text-gray-300 leading-4"
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                >
                   {service.title}
                 </Text>
               </TouchableOpacity>
@@ -107,7 +110,7 @@ export default function HomeScreen() {
         {/* ... (keep Map Section) ... */}
         <View className="mt-2">
           <View className="px-5 mb-3 flex-row justify-between items-end">
-            <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Thợ quanh bạn</Text>
+            <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Thợ và lao động quanh bạn</Text>
             <View className="flex-row items-center">
                <MapPin size={14} color="#0068FF" />
                <Text className="text-primary text-xs ml-1 font-medium">Quận 1, TP.HCM</Text>
