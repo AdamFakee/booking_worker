@@ -3,7 +3,6 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
 import 'react-native-reanimated';
 import '../global.css';
 
@@ -14,11 +13,11 @@ import { ToastProvider } from '@/context/ToastContext';
 
 
 import {
-    BeVietnamPro_400Regular,
-    BeVietnamPro_500Medium,
-    BeVietnamPro_600SemiBold,
-    BeVietnamPro_700Bold,
-    useFonts,
+  BeVietnamPro_400Regular,
+  BeVietnamPro_500Medium,
+  BeVietnamPro_600SemiBold,
+  BeVietnamPro_700Bold,
+  useFonts,
 } from '@expo-google-fonts/be-vietnam-pro';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -47,7 +46,6 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <KeyboardProvider>
       <AuthProvider>
         <PostProvider>
           <ToastProvider>
@@ -62,7 +60,6 @@ export default function RootLayout() {
           </ToastProvider>
         </PostProvider>
       </AuthProvider>
-      </KeyboardProvider>
     </ThemeProvider>
   );
 }

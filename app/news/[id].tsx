@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, CalendarCheck } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
+import React from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function NewsDetailScreen() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function NewsDetailScreen() {
             <TouchableOpacity 
               className="bg-amber-400 flex-row items-center justify-center py-4 rounded-xl shadow-lg shadow-amber-400/30 mb-8"
               activeOpacity={0.8}
-              onPress={() => router.push('/booking')}
+              onPress={() => router.push('/search')}
             >
               <CalendarCheck size={20} color="#11181C" />
               <Text className="text-gray-900 font-bold text-lg ml-2">Đặt lịch nhanh chóng</Text>
