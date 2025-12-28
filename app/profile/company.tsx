@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Building2, MapPin, Mail, Phone, Landmark } from 'lucide-react-native';
+import { ArrowLeft, Building2, Landmark, Mail, MapPin, Phone } from 'lucide-react-native';
+import React from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CompanyInfoScreen() {
   const router = useRouter();
@@ -23,8 +23,8 @@ export default function CompanyInfoScreen() {
 
          {/* Company Name */}
          <View className="bg-white p-4 rounded-2xl mb-4 border border-gray-100 flex-row items-center">
-            <View className="w-12 h-12 bg-amber-50 rounded-xl items-center justify-center mr-4">
-              <Building2 size={24} color="#FFB300" />
+            <View className="w-12 h-12 bg-[#256DC2]/10 rounded-xl items-center justify-center mr-4">
+              <Building2 size={24} color="#256DC2" />
             </View>
             <View className="flex-1">
               <Text className="text-xs text-gray-500 uppercase font-bold mb-1">Tên công ty</Text>
@@ -36,8 +36,8 @@ export default function CompanyInfoScreen() {
 
          {/* Address 1 */}
          <View className="bg-white p-4 rounded-2xl mb-4 border border-gray-100 flex-row items-start">
-            <View className="w-12 h-12 bg-amber-50 rounded-xl items-center justify-center mr-4 mt-1">
-              <MapPin size={24} color="#FFB300" />
+            <View className="w-12 h-12 bg-[#256DC2]/10 rounded-xl items-center justify-center mr-4 mt-1">
+              <MapPin size={24} color="#256DC2" />
             </View>
             <View className="flex-1">
               <Text className="text-xs text-gray-500 uppercase font-bold mb-1">Địa chỉ</Text>
@@ -49,8 +49,8 @@ export default function CompanyInfoScreen() {
 
          {/* Address 2 */}
          <View className="bg-white p-4 rounded-2xl mb-4 border border-gray-100 flex-row items-start">
-            <View className="w-12 h-12 bg-amber-50 rounded-xl items-center justify-center mr-4 mt-1">
-              <MapPin size={24} color="#FFB300" />
+            <View className="w-12 h-12 bg-[#256DC2]/10 rounded-xl items-center justify-center mr-4 mt-1">
+              <MapPin size={24} color="#256DC2" />
             </View>
             <View className="flex-1">
               <Text className="text-xs text-gray-500 uppercase font-bold mb-1">Văn phòng giao dịch</Text>
@@ -62,8 +62,8 @@ export default function CompanyInfoScreen() {
 
          {/* Bank Info */}
          <View className="bg-white p-4 rounded-2xl mb-8 border border-gray-100 flex-row items-start">
-            <View className="w-12 h-12 bg-amber-50 rounded-xl items-center justify-center mr-4 mt-1">
-              <Landmark size={24} color="#FFB300" />
+            <View className="w-12 h-12 bg-[#256DC2]/10 rounded-xl items-center justify-center mr-4 mt-1">
+              <Landmark size={24} color="#256DC2" />
             </View>
             <View className="flex-1">
                <Text className="text-xs text-gray-500 uppercase font-bold mb-1">Số tài khoản</Text>
@@ -78,8 +78,8 @@ export default function CompanyInfoScreen() {
 
          {/* Email */}
          <View className="bg-white p-4 rounded-2xl mb-4 border border-gray-100 flex-row items-center">
-            <View className="w-12 h-12 bg-amber-50 rounded-xl items-center justify-center mr-4">
-              <Mail size={24} color="#FFB300" />
+            <View className="w-12 h-12 bg-[#256DC2]/10 rounded-xl items-center justify-center mr-4">
+              <Mail size={24} color="#256DC2" />
             </View>
             <View className="flex-1">
               <Text className="text-xs text-gray-500 uppercase font-bold mb-1">Email</Text>
@@ -91,8 +91,8 @@ export default function CompanyInfoScreen() {
 
          {/* Hotline */}
          <View className="bg-white p-4 rounded-2xl mb-10 border border-gray-100 flex-row items-center">
-            <View className="w-12 h-12 bg-amber-50 rounded-xl items-center justify-center mr-4">
-              <Phone size={24} color="#FFB300" />
+            <View className="w-12 h-12 bg-[#256DC2]/10 rounded-xl items-center justify-center mr-4">
+              <Phone size={24} color="#256DC2" />
             </View>
             <View className="flex-1">
               <Text className="text-xs text-gray-500 uppercase font-bold mb-1">Hotline</Text>

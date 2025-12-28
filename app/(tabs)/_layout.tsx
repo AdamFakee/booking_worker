@@ -10,7 +10,7 @@ import { useColorScheme } from 'nativewind';
 export default function TabLayout() {
   const { colorScheme } = useColorScheme();
   const insets = useSafeAreaInsets();
-  const activeColor = colorScheme === 'dark' ? '#0068FF' : '#0068FF'; // Keep Primary Blue
+  const activeColor = colorScheme === 'dark' ? '#256DC2' : '#256DC2'; // Keep Primary Blue
   // Force refresh
 
 

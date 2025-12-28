@@ -1,19 +1,14 @@
-import React from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, Linking, Platform } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { 
-  ArrowLeft, 
-  MapPin, 
-  Star, 
-  ShieldCheck, 
-  Phone, 
-  MessageCircle, 
-  MessageSquare, 
-  Clock, 
-  Award,
-  ThumbsUp
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import {
+   ArrowLeft,
+   MessageSquare,
+   Phone,
+   ShieldCheck,
+   Star
 } from 'lucide-react-native';
+import React from 'react';
+import { Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MOCK_WORKER_DETAIL = {
   id: '1',
@@ -59,7 +54,7 @@ export default function WorkerProfileScreen() {
   return (
     <SafeAreaView className="flex-1 bg-surface dark:bg-slate-950" edges={['top']}>
       {/* Header with Background Image Effect (Simulated) */}
-      <View className="h-48 bg-blue-600 absolute top-0 left-0 right-0" />
+      <View className="h-48 bg-[#256DC2] absolute top-0 left-0 right-0" />
       
       <View className="flex-row items-center justify-between px-4 py-3 z-10">
         <TouchableOpacity 
@@ -82,7 +77,7 @@ export default function WorkerProfileScreen() {
                    className="w-20 h-20 rounded-full bg-gray-200 border-2 border-white dark:border-slate-800"
                  />
                  {worker.verified && (
-                    <View className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-1 border-2 border-white dark:border-slate-900">
+                    <View className="absolute -bottom-2 -right-2 bg-[#256DC2] rounded-full p-1 border-2 border-white dark:border-slate-900">
                         <ShieldCheck size={14} color="white" fill="white" />
                     </View>
                  )}
@@ -125,8 +120,8 @@ export default function WorkerProfileScreen() {
            <Text className="text-lg font-bold text-gray-900 dark:text-white mb-3">Kỹ năng đã xác thực</Text>
            <View className="flex-row flex-wrap">
               {worker.skills.map((skill, index) => (
-                 <View key={index} className="bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-lg mr-2 mb-2 border border-green-100 dark:border-green-900/30">
-                    <Text className="text-sm font-medium text-green-700 dark:text-green-400">{skill}</Text>
+                 <View key={index} className="bg-[#256DC2]/10 dark:bg-green-900/20 px-3 py-1.5 rounded-lg mr-2 mb-2 border border-[#256DC2]/20 dark:border-green-900/30">
+                    <Text className="text-sm font-medium text-[#256DC2] dark:text-green-400">{skill}</Text>
                  </View>
               ))}
            </View>
@@ -137,7 +132,7 @@ export default function WorkerProfileScreen() {
            <View className="flex-row justify-between items-center mb-4">
               <Text className="text-lg font-bold text-gray-900 dark:text-white">Đánh giá từ khách hàng</Text>
               <TouchableOpacity onPress={() => router.push(`/find-worker/reviews/${worker.id}` as any)}>
-                 <Text className="text-primary font-bold text-sm">Xem tất cả</Text>
+                 <Text className="text-[#256DC2] font-bold text-sm">Xem tất cả</Text>
               </TouchableOpacity>
            </View>
            
@@ -170,7 +165,7 @@ export default function WorkerProfileScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity 
-            className="flex-1 bg-blue-500 flex-col items-center justify-center py-3 rounded-xl mr-2 shadow-lg shadow-blue-200"
+            className="flex-1 bg-[#256DC2] flex-col items-center justify-center py-3 rounded-xl mr-2 shadow-lg shadow-blue-900/20"
             onPress={handleZalo}
           >
              {/* Simple Text for Zalo if no icon */}

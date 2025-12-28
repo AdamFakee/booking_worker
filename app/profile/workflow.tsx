@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Calendar, PhoneCall, Search, CheckCircle2, ClipboardSignature } from 'lucide-react-native';
+import { ArrowLeft, Calendar, CheckCircle2, ClipboardSignature, PhoneCall, Search } from 'lucide-react-native';
+import React from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const STEPS = [
   {
@@ -56,25 +56,25 @@ export default function WorkflowScreen() {
       </View>
 
       <ScrollView className="flex-1 px-5 pt-8" showsVerticalScrollIndicator={false}>
-         {STEPS.map((step, index) => (
+          {STEPS.map((step, index) => (
            <View key={step.id} className="flex-row mb-2 relative">
              {/* Connector Line */}
              {index !== STEPS.length - 1 && (
-               <View className="absolute left-[26px] top-14 bottom-[-16px] w-[2px] bg-amber-100 z-0" />
+               <View className="absolute left-[26px] top-14 bottom-[-16px] w-[2px] bg-[#256DC2]/20 z-0" />
              )}
 
              {/* Number Circle */}
              <View className="mr-6 z-10 relative">
-               <View className="w-14 h-14 rounded-full bg-amber-400 items-center justify-center border-4 border-white shadow-sm">
-                 <Text className="text-xl font-bold text-gray-900">{step.id}</Text>
+               <View className="w-14 h-14 rounded-full bg-[#256DC2] items-center justify-center border-4 border-white shadow-sm">
+                 <Text className="text-xl font-bold text-white">{step.id}</Text>
                </View>
              </View>
 
              {/* Content Card */}
              <View className="flex-1 bg-white p-5 rounded-2xl border border-gray-100 mb-6 shadow-sm">
                <View className="flex-row items-center mb-3">
-                 <View className="w-10 h-10 bg-amber-50 rounded-xl items-center justify-center mr-3">
-                   <step.icon size={20} color="#FFA000" />
+                 <View className="w-10 h-10 bg-[#256DC2]/10 rounded-xl items-center justify-center mr-3">
+                   <step.icon size={20} color="#256DC2" />
                  </View>
                  <Text className="flex-1 text-lg font-bold text-gray-800">{step.title}</Text>
                </View>

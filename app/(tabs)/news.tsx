@@ -20,7 +20,7 @@ export default function FeedScreen() {
   const renderHeader = () => (
     <View className="bg-white dark:bg-slate-900 pt-2 shadow-sm z-10 border-b border-gray-100 dark:border-gray-800">
         <View className="flex-row justify-between items-center px-4 pb-2">
-            <Text className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            <Text className="text-2xl font-bold text-[#256DC2] dark:text-[#256DC2]">
               Feeds
             </Text>
             <View className="flex-row gap-4 items-center">

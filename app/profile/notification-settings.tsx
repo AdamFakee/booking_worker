@@ -63,7 +63,7 @@ export default function NotificationSettingsScreen() {
           onPress={() => router.back()} 
           className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800"
         >
-          <ArrowLeft size={24} color="#0068FF" />
+          <ArrowLeft size={24} color="#256DC2" />
         </TouchableOpacity>
         <View className="flex-1 ml-3">
           <Text className="text-h2 font-bold text-gray-900 dark:text-white">Cài đặt thông báo</Text>
@@ -89,7 +89,7 @@ export default function NotificationSettingsScreen() {
                 onPress={() => setActiveTab(tab.id)}
                 className={`flex-row items-center px-4 py-2 rounded-full mr-2 ${
                   isActive 
-                    ? 'bg-primary' 
+                    ? 'bg-[#256DC2]' 
                     : 'bg-gray-100 dark:bg-slate-800'
                 }`}
               >
@@ -138,7 +138,7 @@ export default function NotificationSettingsScreen() {
                 <Switch
                   value={setting.enabled}
                   onValueChange={() => toggleSetting(setting.id)}
-                  trackColor={{ false: '#D1D5DB', true: '#0068FF' }}
+                  trackColor={{ false: '#D1D5DB', true: '#256DC2' }}
                   thumbColor="#FFFFFF"
                   ios_backgroundColor="#D1D5DB"
                 />
@@ -148,8 +148,8 @@ export default function NotificationSettingsScreen() {
         )}
 
         {/* Info Note */}
-        <View className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-2xl p-4 mb-6">
-          <Text className="text-sm text-blue-900 dark:text-blue-200 leading-6">
+      <View className="bg-[#256DC2]/10 border border-[#256DC2]/20 rounded-2xl p-4 mb-6">
+          <Text className="text-sm text-[#256DC2] leading-6">
             💡 <Text className="font-semibold">Lưu ý:</Text> Một số thông báo quan trọng như thanh toán và bảo mật sẽ luôn được gửi để đảm bảo an toàn cho tài khoản của bạn.
           </Text>
         </View>

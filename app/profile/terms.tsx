@@ -1,13 +1,14 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, FileText, CheckCircle } from 'lucide-react-native';
+import { ArrowLeft, CheckCircle, FileText } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
+import React from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TermsScreen() {
   const router = useRouter();
   const { colorScheme } = useColorScheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView className="flex-1 bg-surface dark:bg-slate-950" edges={['top']}>
@@ -82,9 +83,12 @@ export default function TermsScreen() {
       </ScrollView>
 
       {/* Accept Button */}
-      <View className="p-4 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-gray-800">
+      <View 
+        className="p-4 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-gray-800"
+        style={{ paddingBottom: Math.max(insets.bottom, 20) }}
+      >
         <TouchableOpacity 
-          className="bg-primary py-4 rounded-xl items-center"
+          className="bg-[#256DC2] py-4 rounded-xl items-center"
           onPress={() => router.back()}
         >
           <Text className="text-white font-bold text-lg">Tôi đã hiểu</Text>

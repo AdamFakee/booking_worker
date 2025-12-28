@@ -34,7 +34,7 @@ export const NewsCarousel = () => {
   const router = useRouter();
   
   return (
-    <View className="mt-6 mb-2">
+    <View className="mt-2 mb-2">
       <View className="px-5 mb-3 flex-row justify-between items-center">
         <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Tin tức & Mẹo vặt</Text>
         <TouchableOpacity 

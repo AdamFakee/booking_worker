@@ -1,12 +1,12 @@
 import { useRouter } from 'expo-router';
 import {
-    ArrowLeft,
-    Bell,
-    ChevronRight,
-    Globe,
-    Moon,
-    Smartphone,
-    Sun
+  ArrowLeft,
+  Bell,
+  ChevronRight,
+  Globe,
+  Moon,
+  Smartphone,
+  Sun
 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
@@ -26,7 +26,7 @@ export default function SettingsScreen() {
       {/* Header */}
       <View className="flex-row items-center px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
         <TouchableOpacity onPress={() => router.back()} className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800">
-          <ArrowLeft size={24} className="text-gray-900 dark:text-white" color={colorScheme === 'dark' ? '#FFF' : '#11181C'} />
+          <ArrowLeft size={24} className="text-gray-900 dark:text-white" color="#256DC2" />
         </TouchableOpacity>
         <Text className="flex-1 text-center text-h2 font-bold text-gray-900 dark:text-white mr-10">Cài đặt</Text>
       </View>
@@ -39,8 +39,8 @@ export default function SettingsScreen() {
           
           {/* Language */}
           <View className="flex-row items-center p-4 border-b border-gray-100 dark:border-gray-800">
-             <View className="w-9 h-9 bg-purple-50 dark:bg-purple-900/30 rounded-full items-center justify-center mr-3">
-               <Globe size={18} color="#9C27B0" />
+             <View className="w-9 h-9 bg-[#256DC2]/10 dark:bg-purple-900/30 rounded-full items-center justify-center mr-3">
+               <Globe size={18} color="#256DC2" />
              </View>
              <Text className="flex-1 text-body font-medium text-gray-800 dark:text-gray-200">Ngôn ngữ</Text>
              <View className="flex-row items-center bg-gray-50 dark:bg-slate-800 rounded-lg p-1">
@@ -61,14 +61,14 @@ export default function SettingsScreen() {
 
           {/* Theme */}
           <View className="flex-row items-center p-4">
-             <View className="w-9 h-9 bg-orange-50 dark:bg-orange-900/30 rounded-full items-center justify-center mr-3">
-               {colorScheme === 'dark' ? <Moon size={18} color="#EF6C00" /> : <Sun size={18} color="#EF6C00" />}
+             <View className="w-9 h-9 bg-[#256DC2]/10 dark:bg-orange-900/30 rounded-full items-center justify-center mr-3">
+               {colorScheme === 'dark' ? <Moon size={18} color="#256DC2" /> : <Sun size={18} color="#256DC2" />}
              </View>
              <Text className="flex-1 text-body font-medium text-gray-800 dark:text-gray-200">Giao diện tối (Dark Mode)</Text>
              <Switch 
                value={colorScheme === 'dark'} 
                onValueChange={toggleColorScheme}
-               trackColor={{ false: "#e0e0e0", true: "#0068FF" }}
+               trackColor={{ false: "#e0e0e0", true: "#256DC2" }}
                thumbColor={"#FFFFFF"}
              />
           </View>
@@ -83,8 +83,8 @@ export default function SettingsScreen() {
             onPress={() => router.push('/profile/notification-settings' as any)}
             activeOpacity={0.7}
           >
-             <View className="w-9 h-9 bg-red-50 dark:bg-red-900/30 rounded-full items-center justify-center mr-3">
-               <Bell size={18} color="#D32F2F" />
+             <View className="w-9 h-9 bg-[#256DC2]/10 dark:bg-red-900/30 rounded-full items-center justify-center mr-3">
+               <Bell size={18} color="#256DC2" />
              </View>
              <View className="flex-1">
                <Text className="text-body font-medium text-gray-800 dark:text-gray-200">Cài đặt thông báo</Text>
@@ -98,8 +98,8 @@ export default function SettingsScreen() {
         <Text className="text-gray-500 dark:text-gray-400 font-bold uppercase text-xs mb-3 px-2">Thông tin ứng dụng</Text>
         <View className="bg-white dark:bg-slate-900 rounded-2xl mb-10 overflow-hidden border border-gray-100 dark:border-gray-800">
           <View className="flex-row items-center p-4 border-b border-gray-100 dark:border-gray-800">
-             <View className="w-9 h-9 bg-gray-100 dark:bg-slate-800 rounded-full items-center justify-center mr-3">
-               <Smartphone size={18} className="text-gray-600 dark:text-gray-400" color="#455A64" />
+             <View className="w-9 h-9 bg-[#256DC2]/10 dark:bg-slate-800 rounded-full items-center justify-center mr-3">
+               <Smartphone size={18} className="text-gray-600 dark:text-gray-400" color="#256DC2" />
              </View>
              <Text className="flex-1 text-body font-medium text-gray-800 dark:text-gray-200">Phiên bản</Text>
              <Text className="text-body text-gray-500 dark:text-gray-400">1.0.0 (Build 20251225)</Text>

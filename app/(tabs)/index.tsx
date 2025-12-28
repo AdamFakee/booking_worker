@@ -3,16 +3,15 @@ import { NewsCarousel } from '@/components/home/NewsCarousel';
 import { Link, useRouter } from 'expo-router';
 import {
   BellIcon,
-  BrickWall,
-  Droplets,
-  HardHat,
-  Key,
+  Clock, // Updated: For Part-time
+  GraduationCap,
+  Hammer, // Updated: For Phổ thông
+  HardHat, // Updated: For Công nhân
   MoreHorizontal,
-  PaintRoller,
   Search,
+  ShoppingBag, // Updated: For Giúp việc, bán hàng
   Snowflake,
-  Sparkles,
-  Zap
+  Zap // Keep for Điện nước
 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -20,14 +19,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Data for the 8-item grid - Updated to match design
 const services = [
-  { id: '1', title: 'Sửa điện', icon: Zap, color: '#FFEBEE', iconColor: '#EF5350' }, // Red-ish
-  { id: '2', title: 'Sửa nước', icon: Droplets, color: '#E3F2FD', iconColor: '#42A5F5' }, // Blue
-  { id: '3', title: 'Điện lạnh', icon: Snowflake, color: '#E0F7FA', iconColor: '#26C6DA' }, // Cyan
-  { id: '4', title: 'Xây dựng', icon: BrickWall, color: '#FFF3E0', iconColor: '#FF7043' }, // Orange
-  { id: '5', title: 'Vệ sinh', icon: Sparkles, color: '#E8F5E9', iconColor: '#66BB6A' }, // Green
-  { id: '6', title: 'Khóa & Cửa', icon: Key, color: '#FFF8E1', iconColor: '#FFCA28' }, // Yellow
-  { id: '7', title: 'Sơn sửa', icon: PaintRoller, color: '#F3E5F5', iconColor: '#AB47BC' }, // Purple
-  { id: '8', title: 'Xem thêm', icon: MoreHorizontal, color: '#F5F5F5', iconColor: '#757575' }, // Grey
+  { id: '1', title: 'Điện nước', icon: Zap, color: '#E3F2FD', iconColor: '#42A5F5' }, // Blue
+  { id: '2', title: 'Công nhân', icon: HardHat, color: '#FFF3E0', iconColor: '#FF7043' }, // Orange - Changed to HardHat
+  { id: '3', title: 'Điện lạnh', icon: Snowflake, color: '#E8F5E9', iconColor: '#66BB6A' }, // Green
+  { id: '4', title: 'Giúp việc, bán hàng', icon: ShoppingBag, color: '#FCE4EC', iconColor: '#EC407A' }, // Pink - Changed to ShoppingBag
+  { id: '5', title: 'Sinh viên', icon: GraduationCap, color: '#E0F7FA', iconColor: '#26C6DA' }, // Cyan
+  { id: '6', title: 'Part-time', icon: Clock, color: '#F3E5F5', iconColor: '#AB47BC' }, // Purple - Changed to Clock
+  { id: '7', title: 'Phổ thông', icon: Hammer, color: '#EFEBE9', iconColor: '#8D6E63' }, // Brown - Changed to Hammer
+  { id: '8', title: '...', icon: MoreHorizontal, color: '#F5F5F5', iconColor: '#757575' }, // Grey
 ];
 
 // Mock Data for Map Markers (Keep existing)

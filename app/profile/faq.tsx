@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, LayoutAnimation, Platform, UIManager } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
+import React, { useState } from 'react';
+import { LayoutAnimation, Platform, ScrollView, Text, TouchableOpacity, UIManager, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -54,7 +54,7 @@ export default function FAQScreen() {
                  onPress={() => toggleExpand(index)}
                >
                  <View className="flex-row items-center flex-1 mr-2">
-                   <View className="w-8 h-8 rounded-full bg-amber-400 dark:bg-amber-600 items-center justify-center mr-3">
+                   <View className="w-8 h-8 rounded-full bg-[#256DC2] dark:bg-[#256DC2] items-center justify-center mr-3">
                      <Text className="text-white font-bold">{index + 1}</Text>
                    </View>
                    <Text className="nav-text text-gray-900 dark:text-white font-medium flex-1 leading-5">{item.q}</Text>
