@@ -10,32 +10,16 @@ import React from 'react';
 import { Image, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const MOCK_WORKER_DETAIL = {
-  id: '1',
-  name: 'Nguyễn Văn A',
-  service: 'Điện nước, Lắp đặt máy lạnh',
-  distance: 0.5,
-  rating: 4.8,
-  reviews: 124,
-  verified: true,
-  avatar: 'https://i.pravatar.cc/150?u=1',
-  phone: '0901234567',
-  zalo: '0901234567',
-  bio: 'Chuyên sửa chữa điện nước dân dụng, lắp đặt thiết bị vệ sinh, máy bơm nước. Có kinh nghiệm 5 năm trong nghề, cam kết uy tín, chất lượng.',
-  skills: ['Sửa đường ống nước', 'Lắp đặt đèn LED', 'Thông nghẹt', 'Sửa máy bơm', 'Thi công điện âm tường'],
-  stats: {
-    jobs: 540,
-    successRate: '99%',
-    experience: '5 năm'
-  }
-};
+import { MOCK_WORKERS } from '@/constants/mockData';
 
 export default function WorkerProfileScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   
-  // In a real app, fetch worker by ID. We use mock data here.
-  const worker = MOCK_WORKER_DETAIL;
+  // Find worker by ID, fallback to first if not found (or handle error)
+  const worker = MOCK_WORKERS.find(w => w.id === id) || MOCK_WORKERS[0];
+
+  if (!worker) return null;
 
   const handleCall = () => {
     Linking.openURL(`tel:${worker.phone}`);

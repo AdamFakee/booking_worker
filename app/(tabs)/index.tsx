@@ -1,6 +1,6 @@
 import ServiceBottomSheet from '@/components/ServiceBottomSheet';
 import { NewsCarousel } from '@/components/home/NewsCarousel';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import {
   BellIcon,
   Clock, // Updated: For Part-time
@@ -14,7 +14,7 @@ import {
   Zap // Keep for Điện nước
 } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Data for the 8-item grid - Updated to match design
@@ -87,8 +87,8 @@ export default function HomeScreen() {
 
       {/* Overlapping Search Bar */}
       <View className="px-5 -mt-6 z-50">
-        <Link href="/search" asChild>
-          <TouchableOpacity 
+        <TouchableWithoutFeedback onPress={() => router.push('/search')}>
+          <View 
             className="flex-row items-center bg-white rounded-2xl px-4 h-14 border border-gray-100"
             style={{ 
               elevation: 4, 
@@ -102,8 +102,8 @@ export default function HomeScreen() {
             <Text className="flex-1 ml-3 font-medium text-gray-400 text-base">
               Tìm lao động và việc làm...
             </Text>
-          </TouchableOpacity>
-        </Link>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
 
       <ScrollView className="flex-1 bg-[#fefefe]" showsVerticalScrollIndicator={false}>

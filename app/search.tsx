@@ -1,3 +1,4 @@
+import FloatingSelectionBar from '@/components/selection/FloatingSelectionBar';
 import { useRouter } from 'expo-router';
 import {
   ArrowLeft,
@@ -41,6 +42,7 @@ export default function SearchScreen() {
   );
 
   return (
+    <>
     <SafeAreaView className="flex-1 bg-surface" edges={['top']}>
       {/* Header */}
       <View className="flex-row items-center px-4 py-2 mt-2">
@@ -85,7 +87,7 @@ export default function SearchScreen() {
           data={filteredServices}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 40 }}
+          contentContainerStyle={{ paddingBottom: 120 }}
           renderItem={({ item }) => (
             <TouchableOpacity 
               className="flex-row items-center bg-white p-4 mb-3 rounded-2xl border border-gray-100 shadow-sm active:bg-gray-50"
@@ -110,5 +112,7 @@ export default function SearchScreen() {
         />
       </View>
     </SafeAreaView>
+    <FloatingSelectionBar />
+    </>
   );
 }
