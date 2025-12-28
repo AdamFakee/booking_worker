@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { MessageCircle, Search } from 'lucide-react-native';
 import React from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Mock data for conversations
 const MOCK_CONVERSATIONS = [
@@ -60,6 +60,7 @@ const MOCK_CONVERSATIONS = [
 
 export default function MessagesScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const handleConversationPress = (workerId: string) => {
     router.push(`/chat/${workerId}`);
@@ -67,7 +68,7 @@ export default function MessagesScreen() {
 
   const renderConversation = ({ item }: { item: typeof MOCK_CONVERSATIONS[0] }) => (
     <TouchableOpacity
-      className="flex-row items-center px-5 py-4 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800 active:bg-gray-50 dark:active:bg-slate-800"
+      className="flex-row items-center px-5 py-4 bg-white border-b border-gray-100 active:bg-gray-50"
       onPress={() => handleConversationPress(item.workerId)}
     >
       {/* Avatar with online indicator */}
@@ -77,14 +78,14 @@ export default function MessagesScreen() {
           className="w-14 h-14 rounded-full bg-gray-200"
         />
         {item.online && (
-          <View className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full" />
+          <View className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
         )}
       </View>
 
       {/* Message Info */}
       <View className="flex-1">
         <View className="flex-row items-center justify-between mb-1">
-          <Text className="text-base font-bold text-gray-900 dark:text-white">
+          <Text className="text-base font-bold text-gray-900">
             {item.workerName}
           </Text>
           <Text className="text-xs text-gray-400">{item.timestamp}</Text>
@@ -93,15 +94,15 @@ export default function MessagesScreen() {
           <Text
             className={`text-sm flex-1 ${
               item.unread > 0
-                ? 'text-gray-900 dark:text-white font-semibold'
-                : 'text-gray-500 dark:text-gray-400'
+                ? 'text-gray-900 font-semibold'
+                : 'text-gray-500'
             }`}
             numberOfLines={1}
           >
             {item.lastMessage}
           </Text>
           {item.unread > 0 && (
-            <View className="ml-2 bg-blue-600 rounded-full w-5 h-5 items-center justify-center">
+            <View className="ml-2 bg-[#256DC2] rounded-full w-5 h-5 items-center justify-center">
               <Text className="text-white text-xs font-bold">{item.unread}</Text>
             </View>
           )}
@@ -111,15 +112,18 @@ export default function MessagesScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50 dark:bg-slate-950" edges={['top']}>
+    <View className="flex-1 bg-[#fefefe]">
       {/* Header */}
-      <View className="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
-        <View className="flex-row justify-between items-center px-5 py-4">
-          <Text className="text-2xl font-bold text-gray-900 dark:text-white">
+      <View 
+        style={{ paddingTop: insets.top + 10, paddingBottom: 20 }} 
+        className="bg-white px-5 border-b border-gray-100"
+      >
+        <View className="flex-row justify-between items-center py-2">
+          <Text className="text-2xl font-bold text-[#256DC2]">
             Tin nhắn
           </Text>
-          <TouchableOpacity className="p-2">
-            <Search size={24} className="text-gray-900 dark:text-white" />
+          <TouchableOpacity className="p-2 bg-gray-50 rounded-full">
+            <Search size={24} color="#256DC2" />
           </TouchableOpacity>
         </View>
       </View>
@@ -130,6 +134,7 @@ export default function MessagesScreen() {
         keyExtractor={(item) => item.id}
         renderItem={renderConversation}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 0 }}
         ListEmptyComponent={() => (
           <View className="flex-1 items-center justify-center py-20">
             <MessageCircle size={64} color="#9BA1A6" />
@@ -140,6 +145,6 @@ export default function MessagesScreen() {
           </View>
         )}
       />
-    </SafeAreaView>
+    </View>
   );
 }
