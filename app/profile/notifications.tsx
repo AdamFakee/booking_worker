@@ -64,8 +64,8 @@ export default function NotificationsScreen() {
 
   const tabs: { id: NotificationTab; label: string }[] = [
     { id: 'all', label: 'Tất cả' },
-    { id: 'order', label: 'Đơn hàng' },
-    { id: 'transaction', label: 'Giao dịch' },
+    { id: 'order', label: 'Hệ thống' },
+    { id: 'transaction', label: 'Tin nhắn' },
     { id: 'other', label: 'Khác' },
   ];
 
