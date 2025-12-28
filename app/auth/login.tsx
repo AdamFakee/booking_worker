@@ -1,6 +1,6 @@
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'expo-router';
-import { CheckSquare, Facebook, Smartphone, Square, X } from 'lucide-react-native';
+import { ArrowLeft, CheckSquare, Facebook, Smartphone, Square, X } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Alert, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -39,14 +39,24 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-slate-950 px-6 justify-center">
-      <View className="items-center mb-6">
+    <SafeAreaView className="flex-1 bg-white dark:bg-slate-950">
+      <View className="px-6 py-2">
+        <TouchableOpacity 
+          onPress={() => router.back()} 
+          className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800"
+        >
+            <ArrowLeft size={24} color="#11181C" />
+        </TouchableOpacity>
+      </View>
+
+      <View className="flex-1 justify-center px-6">
+        <View className="items-center mb-6">
          {/* Logo Placeholder */}
          <View className="w-20 h-20 bg-blue-600 rounded-3xl items-center justify-center mb-4 shadow-lg shadow-blue-300">
              <Text className="text-3xl font-extrabold text-white">4T</Text>
          </View>
          <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lao động & Việc Làm</Text>
-         <Text className="text-gray-500 text-center">Đăng nhập để kết nối với hàng ngàn thợ giỏi và khách hàng tiềm năng.</Text>
+         <Text className="text-gray-500 text-center">Đăng nhập để kết nối người lao động & việc làm quanh bạn!</Text>
       </View>
 
 
@@ -154,6 +164,7 @@ export default function LoginScreen() {
             </View>
         </View>
       </Modal>
+      </View>
     </SafeAreaView>
   );
 }

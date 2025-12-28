@@ -100,7 +100,7 @@ export default function HomeScreen() {
           >
             <Search size={22} color="#9CA3AF" />
             <Text className="flex-1 ml-3 font-medium text-gray-400 text-base">
-              Bạn cần tìm thợ gì hôm nay?
+              Tìm lao động và việc làm...
             </Text>
           </TouchableOpacity>
         </Link>
@@ -138,7 +138,7 @@ export default function HomeScreen() {
 
         {/* Workers Nearby Section */}
         <View className="px-5 mt-4">
-          <Text className="text-lg font-bold text-gray-800 mb-3">Thợ gần bạn</Text>
+          <Text className="text-lg font-bold text-gray-800 mb-3">Thợ và lao động quanh bạn</Text>
           
           <View className="h-48 bg-[#e9e8e8] rounded-2xl overflow-hidden relative border border-gray-200">
              {/* Simulated Map Background */}

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, Link } from 'expo-router';
-import { 
-  ArrowLeft, 
-  Search, 
-  Wrench, 
+import { useRouter } from 'expo-router';
+import {
+  ArrowLeft,
   ChevronRight,
-  Hammer,
-  Zap,
   Droplets,
-  PaintBucket
+  Hammer,
+  PaintBucket,
+  Search,
+  Wrench,
+  Zap
 } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const suggestions = [
   "máy lạnh", "máy giặt", "tủ lạnh", "đèn", "điện", 
@@ -43,32 +43,28 @@ export default function SearchScreen() {
   return (
     <SafeAreaView className="flex-1 bg-surface" edges={['top']}>
       {/* Header */}
-      <View className="flex-row items-center px-4 py-3 bg-white border-b border-gray-100">
+      <View className="flex-row items-center px-4 py-2 mt-2">
         <TouchableOpacity 
           onPress={() => router.back()} 
-          className="w-10 h-10 items-center justify-center rounded-full bg-gray-50"
+          className="mr-3 w-10 h-10 items-center justify-center rounded-full bg-gray-50"
         >
           <ArrowLeft size={24} color="#11181C" />
         </TouchableOpacity>
-        <Text className="flex-1 text-center text-h2 font-bold text-gray-900 mr-10">
-          Dịch vụ Thợ Việt
-        </Text>
-      </View>
-
-      <View className="flex-1 px-5">
-        {/* Search Bar */}
-        <View className="mt-4 flex-row items-center bg-white border border-gray-200 rounded-2xl px-4 h-12 shadow-sm">
+        
+        <View className="flex-1 flex-row items-center bg-white border border-gray-200 rounded-2xl px-4 h-12 shadow-sm">
           <Search size={20} color="#9BA1A6" />
           <TextInput 
             value={query}
             onChangeText={setQuery}
-            placeholder="Tìm kiếm dịch vụ..." 
+            placeholder="Tìm lao động và việc làm..." 
             placeholderTextColor="#9BA1A6"
             className="flex-1 ml-3 font-medium text-body text-gray-800"
             autoFocus
           />
         </View>
+      </View>
 
+      <View className="flex-1 px-5">
         {/* Suggestions */}
         <View className="mt-3">
           <Text className="text-caption text-gray-500 italic leading-5">

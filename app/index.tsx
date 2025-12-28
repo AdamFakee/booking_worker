@@ -37,7 +37,7 @@ export default function RoleSelectionScreen() {
            <Hammer size={40} color="white" />
         </View>
         <Text className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
-          Chào mừng đến với Thợ Việt
+          Chào mừng đến với Lao động & Việc Làm
         </Text>
         <Text className="text-body text-gray-500 dark:text-gray-400 text-center px-4">
           Giải pháp tìm thợ uy tín - nhanh chóng - chất lượng hàng đầu Việt Nam
@@ -48,7 +48,7 @@ export default function RoleSelectionScreen() {
         Bạn là ai?
       </Text>
 
-      <View className="space-y-4">
+      <View className="gap-4 flex-col">
         {/* Customer Button */}
         <TouchableOpacity 
           className="flex-row items-center p-5 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800 active:scale-95 transition-transform"
@@ -74,7 +74,7 @@ export default function RoleSelectionScreen() {
             <Hammer size={28} color="white" />
           </View>
           <View className="flex-1">
-             <Text className="text-lg font-bold text-gray-900 dark:text-white mb-1">Tôi là Thợ</Text>
+             <Text className="text-lg font-bold text-gray-900 dark:text-white mb-1">Tôi là người lao động</Text>
              <Text className="text-sm text-gray-500 dark:text-gray-300">Đăng ký làm đối tác, nhận việc...</Text>
           </View>
         </TouchableOpacity>

@@ -36,7 +36,7 @@ export const NewsCarousel = () => {
   return (
     <View className="mt-2 mb-2">
       <View className="px-5 mb-3 flex-row justify-between items-center">
-        <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Tin tức & Mẹo vặt</Text>
+        <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Tin tức & Tuyển dụng</Text>
         <TouchableOpacity 
             className="flex-row items-center"
             onPress={() => router.push('/news')}

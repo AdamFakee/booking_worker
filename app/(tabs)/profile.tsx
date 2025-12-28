@@ -1,15 +1,15 @@
 import { useRouter } from 'expo-router';
 import {
-    Bell,
-    Briefcase,
-    ChevronRight,
-    FileText,
-    HelpCircle,
-    Info,
-    LogOut,
-    MessageSquare,
-    Settings,
-    User
+  Bell,
+  Briefcase,
+  ChevronRight,
+  FileText,
+  HelpCircle,
+  Info,
+  LogOut,
+  MessageSquare,
+  Settings,
+  User
 } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -44,7 +44,7 @@ const MENU_ITEMS = [
   },
   { 
     id: 'feedback', 
-    title: 'Góp ý dịch vụ', 
+    title: 'Góp ý', 
     icon: MessageSquare, 
     color: '#00C853', 
     bg: '#E8F5E9',
@@ -122,7 +122,7 @@ export default function ProfileScreen() {
           {!user.isWorker && (
             <TouchableOpacity 
               className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl border-2 border-amber-400 dark:border-amber-600 p-5 mb-6 shadow-lg shadow-amber-200/50"
-              onPress={() => router.push('/worker-auth/register' as any)}
+              onPress={() => router.push('/worker-auth/login')}
               activeOpacity={0.8}
             >
               <View className="flex-row items-center mb-3">

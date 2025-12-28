@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, KeyboardAvoidingView, Platform, Image, Modal, TouchableWithoutFeedback, Linking } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, Send, Phone, MoreVertical, ShieldCheck } from 'lucide-react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { ArrowLeft, MoreVertical, Phone, Send, ShieldCheck } from 'lucide-react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Image, KeyboardAvoidingView, Linking, Modal, Platform, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const INITIAL_MESSAGE = "Xin chào! Tôi có thể giúp gì cho bạn hôm nay?";
 
@@ -25,6 +25,7 @@ interface Message {
 export default function ChatScreen() {
   const router = useRouter();
   const { id, role } = useLocalSearchParams();
+  const insets = useSafeAreaInsets();
   const isWorkerParams = role === 'worker';
 
   // Mock Customer Data for Worker View
@@ -99,10 +100,11 @@ export default function ChatScreen() {
   return (
     <SafeAreaView className="flex-1 bg-surface dark:bg-slate-950" edges={['top']}>
       {/* Header */}
-      <View className="flex-row items-center px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800 shadow-sm z-10">
+      {/* Header */}
+      <View className="flex-row items-center px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
         <TouchableOpacity 
           onPress={() => router.back()} 
-          className="mr-3"
+          className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800 mr-3"
         >
           <ArrowLeft size={24} color="#11181C" />
         </TouchableOpacity>
@@ -124,12 +126,12 @@ export default function ChatScreen() {
         </View>
 
         <TouchableOpacity 
-           className="p-2 bg-green-50 dark:bg-green-900/20 rounded-full mr-2"
+           className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800 ml-2"
            onPress={() => setShowCallModal(true)}
         >
            <Phone size={20} color="#00C853" />
         </TouchableOpacity>
-        <TouchableOpacity className="p-2">
+        <TouchableOpacity className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800 ml-2">
            <MoreVertical size={20} color="#9BA1A6" />
         </TouchableOpacity>
       </View>
@@ -182,7 +184,10 @@ export default function ChatScreen() {
         </View>
 
         {/* Input Area */}
-        <View className="flex-row items-center px-4 py-3 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-gray-800">
+        <View 
+          className="flex-row items-center px-4 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-gray-800"
+          style={{ paddingBottom: Math.max(insets.bottom, 12), paddingTop: 12 }}
+        >
            <TextInput 
              style={{
                 flex: 1,

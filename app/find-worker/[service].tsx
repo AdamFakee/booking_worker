@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft, MapPin, Search, ShieldCheck, Star } from 'lucide-react-native';
+import { ArrowLeft, MapPin, ShieldCheck, Star } from 'lucide-react-native';
 import React from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -73,22 +73,17 @@ export default function WorkerListScreen() {
   return (
     <SafeAreaView className="flex-1 bg-surface dark:bg-slate-950" edges={['top']}>
       {/* Header */}
-      <View className="flex-row items-center px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-gray-800">
+      {/* Header */}
+      <View className="flex-row items-center px-4 py-3 mt-2">
         <TouchableOpacity 
           onPress={() => router.back()} 
-          className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800"
+          className="w-10 h-10 items-center justify-center rounded-full bg-gray-50 dark:bg-slate-800 mr-4"
         >
           <ArrowLeft size={24} color="#11181C" />
         </TouchableOpacity>
-        <View className="flex-1 ml-4">
-            <Text className="text-body text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Tìm thợ gần bạn</Text>
-            <Text className="text-h2 font-bold text-gray-900 dark:text-white" numberOfLines={1}>
-            {decodedService}
-            </Text>
-        </View>
-        <TouchableOpacity className="p-2">
-            <Search size={24} color="#11181C" />
-        </TouchableOpacity>
+        <Text className="flex-1 text-2xl font-bold text-gray-900 dark:text-white" numberOfLines={1}>
+           {decodedService}
+        </Text>
       </View>
 
       {/* Location Bar */}
