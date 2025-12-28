@@ -66,7 +66,7 @@ export default function WorkerListScreen() {
             >
                   {/* Selection Checkbox */}
                 <TouchableOpacity 
-                    className="absolute top-4 right-4 z-10 p-2"
+                    className="absolute top-[60%] right-[4%] z-10 p-2"
                     onPress={() => toggleWorker(item)}
                 >
                     {isSelected(item.id) ? (

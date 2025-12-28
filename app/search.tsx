@@ -3,15 +3,10 @@ import { useRouter } from 'expo-router';
 import {
   ArrowLeft,
   ChevronRight,
-  Droplets,
-  Hammer,
-  PaintBucket,
-  Search,
-  Wrench,
-  Zap
+  Search
 } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const suggestions = [
@@ -20,24 +15,22 @@ const suggestions = [
 ];
 
 // Mock data for search results
-const allServices = [
-  { id: '1', title: 'Sửa nhà', icon: Hammer },
-  { id: '2', title: 'Sửa tường', icon: PaintBucket },
-  { id: '3', title: 'Sửa trần nhà', icon: Hammer },
-  { id: '4', title: 'Sửa sàn nhà', icon: Hammer },
-  { id: '5', title: 'Sửa cửa', icon: Wrench },
-  { id: '6', title: 'Sửa nhà vệ sinh', icon: Droplets },
-  { id: '7', title: 'Sửa bếp', icon: Zap },
-  { id: '8', title: 'Sửa điện', icon: Zap },
-  { id: '9', title: 'Sửa ống nước', icon: Droplets },
-  { id: '10', title: 'Chống thấm', icon: Droplets },
+const services = [
+  { id: '1', title: 'Điện nước', icon: require('../assets/icons/worker commons/điện nước.png'), color: '#E3F2FD' }, // Blue
+  { id: '2', title: 'Công nhân', icon: require('../assets/icons/worker commons/công nhân.png'), color: '#FFF3E0' }, // Orange
+  { id: '3', title: 'Điện lạnh', icon: require('../assets/icons/worker commons/điện lạnh.png'), color: '#E8F5E9' }, // Green
+  { id: '4', title: 'Giúp việc, bán hàng', icon: require('../assets/icons/worker commons/giúp việc, bán hàng.png'), color: '#FCE4EC' }, // Pink
+  { id: '5', title: 'Sinh viên', icon: require('../assets/icons/worker commons/sinh viên.png'), color: '#E0F7FA' }, // Cyan
+  { id: '6', title: 'Part-time', icon: require('../assets/icons/worker commons/part-time.png'), color: '#F3E5F5' }, // Purple
+  { id: '7', title: 'Phổ thông', icon: require('../assets/icons/worker commons/lao động phổ thông.png'), color: '#EFEBE9' }, // Brown
+  { id: '8', title: 'Xem thêm', icon: require('../assets/icons/worker commons/xem thêm.png'), color: '#F5F5F5' }, // Grey
 ];
 
 export default function SearchScreen() {
   const router = useRouter();
   const [query, setQuery] = useState('');
 
-  const filteredServices = allServices.filter(item => 
+  const filteredServices = services.filter(item => 
     item.title.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -76,9 +69,9 @@ export default function SearchScreen() {
 
         {/* List Header */}
         <View className="flex-row items-center mt-6 mb-4">
-          <Text className="text-h2 font-bold text-gray-900">Chọn dịch vụ cần đặt</Text>
-          <View className="ml-3 bg-yellow-400 px-2 py-1 rounded-full">
-            <Text className="text-xs font-bold text-white">436</Text>
+          <Text className="text-h2 font-bold text-gray-900">Chọn lao động bạn cần</Text>
+          <View className="ml-3 bg-[#256DC2] px-2 py-1 rounded-full">
+            <Text className="text-xs font-bold text-white">8</Text>
           </View>
         </View>
 
@@ -94,8 +87,14 @@ export default function SearchScreen() {
               activeOpacity={0.7}
               onPress={() => router.push(`/find-worker/${encodeURIComponent(item.title)}` as any)}
             >
-              <View className="w-12 h-12 rounded-xl bg-orange-50 items-center justify-center mr-4">
-                <item.icon size={24} color="#FF6600" strokeWidth={2} />
+              <View 
+                className="w-12 h-12 rounded-xl items-center justify-center mr-4"
+                style={{ backgroundColor: item.color }}
+              >
+                <Image 
+                    source={item.icon} 
+                    style={{ width: 24, height: 24, resizeMode: 'contain' }}
+                  />
               </View>
               <Text className="flex-1 text-body font-semibold text-gray-800">
                 {item.title}
