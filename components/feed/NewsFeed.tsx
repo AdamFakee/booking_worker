@@ -1,6 +1,5 @@
 import { CreatePostWidget } from '@/components/feed/CreatePostWidget';
 import { FeedItem } from '@/components/feed/FeedItem';
-import { StoriesWidget } from '@/components/feed/StoriesWidget';
 import { NewsCarousel } from '@/components/home/NewsCarousel';
 import { usePosts } from '@/context/PostContext';
 import React from 'react';
@@ -17,7 +16,6 @@ export const NewsFeed = () => {
       ListHeaderComponent={() => (
           <>
               <CreatePostWidget />
-              <StoriesWidget />
               <NewsCarousel />
           </>
       )}

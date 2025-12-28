@@ -1,13 +1,14 @@
+import { DiaryFeed } from '@/components/feed/DiaryFeed';
 import { NewsFeed } from '@/components/feed/NewsFeed';
-import { useRouter } from 'expo-router';
 import { Bell, Search } from 'lucide-react-native';
 import React from 'react';
 import { ActivityIndicator, InteractionManager, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function FeedScreen() {
-  const router = useRouter();
+  // const router = useRouter();
   const [isReady, setIsReady] = React.useState(false);
+  const [activeTab, setActiveTab] = React.useState<'community' | 'diary'>('community');
 
   React.useEffect(() => {
     const task = InteractionManager.runAfterInteractions(() => {
@@ -36,18 +37,16 @@ export default function FeedScreen() {
         {/* Custom Tab Bar */}
         <View className="flex-row">
             <TouchableOpacity 
-                className="flex-1 items-center py-3 border-b-2 border-blue-600"
+                onPress={() => setActiveTab('community')}
+                className={`flex-1 items-center py-3 border-b-2 ${activeTab === 'community' ? 'border-blue-600' : 'border-transparent'}`}
             >
-                <Text className="font-bold text-base text-gray-900 dark:text-white">Nhật Ký</Text>
+                <Text className={`font-bold text-base ${activeTab === 'community' ? 'text-[#256DC2] dark:text-[#256DC2]' : 'text-gray-500'}`}>Cộng đồng</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-                onPress={() => router.push('/feed/video')}
-                className="flex-1 items-center justify-center py-3 border-b-2 border-transparent flex-row gap-2"
+                onPress={() => setActiveTab('diary')}
+                className={`flex-1 items-center justify-center py-3 border-b-2 ${activeTab === 'diary' ? 'border-blue-600' : 'border-transparent'}`}
             >
-                <Text className="font-bold text-base text-gray-500">Shot Video</Text>
-                <View className="bg-green-500 px-1.5 py-0.5 rounded-full">
-                    <Text className="text-[10px] text-white font-bold">Mới</Text>
-                </View>
+                <Text className={`font-bold text-base ${activeTab === 'diary' ? 'text-[#256DC2] dark:text-[#256DC2]' : 'text-gray-500'}`}>Nhật ký</Text>
             </TouchableOpacity>
         </View>
     </View>
@@ -57,7 +56,7 @@ export default function FeedScreen() {
     <SafeAreaView className="flex-1 bg-gray-100 dark:bg-slate-950" edges={['top']}>
       {renderHeader()}
       {isReady ? (
-        <NewsFeed />
+        activeTab === 'community' ? <NewsFeed /> : <DiaryFeed />
       ) : (
         <View className="flex-1 items-center justify-center">
             <ActivityIndicator size="large" color="#0068FF" />
