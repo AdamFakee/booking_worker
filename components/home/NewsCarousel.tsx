@@ -36,13 +36,13 @@ export const NewsCarousel = () => {
   return (
     <View className="mt-6 mb-2">
       <View className="px-5 mb-3 flex-row justify-between items-center">
-        <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Tin tức & Tuyển dụng</Text>
+        <Text className="text-lg font-bold text-gray-800 dark:text-white font-sans">Tin tức & Mẹo vặt</Text>
         <TouchableOpacity 
             className="flex-row items-center"
             onPress={() => router.push('/news')}
         >
-            <Text className="text-primary text-xs font-medium mr-1">Xem tất cả</Text>
-            <ArrowRight size={14} color="#0068FF" />
+            <Text className="text-[#256DC2] text-xs font-medium mr-1">Xem tất cả</Text>
+            <ArrowRight size={14} color="#256DC2" />
         </TouchableOpacity>
       </View>
 
@@ -65,8 +65,8 @@ export const NewsCarousel = () => {
                 />
                 <View className="p-3">
                     <View className="flex-row items-center justify-between mb-2">
-                         <View className="bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-md">
-                             <Text className="text-[10px] font-bold text-blue-600 dark:text-blue-400">{item.category}</Text>
+                         <View className="bg-[#256DC2]/10 px-2 py-1 rounded-md">
+                             <Text className="text-[10px] font-bold text-[#256DC2]">{item.category}</Text>
                          </View>
                          <View className="flex-row items-center">
                              <Clock size={10} color="#9BA1A6" className="mr-1" />
