@@ -2,10 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+export type VerificationStatus = 'new' | 'info_submitted' | 'ekyc_completed' | 'verified' | 'vip';
+
 interface UserData {
   isLoggedIn: boolean;
   isWorker: boolean; // Has registered as a worker (verified ID)
   isWorkerActive: boolean; // Worker mode is currently active
+  verificationStatus: VerificationStatus;
 }
 
 interface AuthContextType {
@@ -13,7 +16,8 @@ interface AuthContextType {
   isLoading: boolean;
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
-  registerAsWorker: () => Promise<void>; // After ID verification
+  registerAsWorker: () => Promise<void>; // Start worker flow
+  updateVerificationStatus: (status: VerificationStatus) => Promise<void>;
   toggleWorkerActive: () => Promise<void>; // Toggle worker active status
 }
 
@@ -21,6 +25,7 @@ const defaultUserData: UserData = {
   isLoggedIn: false,
   isWorker: false,
   isWorkerActive: false,
+  verificationStatus: 'new',
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -29,6 +34,7 @@ const AuthContext = createContext<AuthContextType>({
   signIn: async () => {},
   signOut: async () => {},
   registerAsWorker: async () => {},
+  updateVerificationStatus: async () => {},
   toggleWorkerActive: async () => {},
 });
 
@@ -66,9 +72,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async () => {
     const newUserData: UserData = {
+      ...user,
       isLoggedIn: true,
-      isWorker: false,
-      isWorkerActive: false,
+      // Keep existing worker state if re-logging in
+      isWorker: user.isWorker || false,
+      verificationStatus: user.verificationStatus || 'new',
     };
     await saveUserData(newUserData);
   };
@@ -85,11 +93,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const registerAsWorker = async () => {
-    // Called after ID verification is complete
+    // Called when user clicks "Register as Worker"
     const newUserData: UserData = {
       ...user,
       isWorker: true,
-      isWorkerActive: false, // Default to inactive
+      verificationStatus: 'new', // Reset or start as new
+      isWorkerActive: false,
+    };
+    await saveUserData(newUserData);
+  };
+
+  const updateVerificationStatus = async (status: VerificationStatus) => {
+    const newUserData: UserData = {
+      ...user,
+      verificationStatus: status,
+      // If verified or vip, allow setting active, otherwise force inactive?
+      // actually, just updating status here.
     };
     await saveUserData(newUserData);
   };
@@ -99,6 +118,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.warn('User is not registered as a worker');
       return;
     }
+    
+    // Only allow active if verified or vip
+    if (user.verificationStatus !== 'verified' && user.verificationStatus !== 'vip') {
+        alert('Vui lòng hoàn tất xác thực để bật trạng thái hoạt động.');
+        return;
+    }
+
     const newUserData: UserData = {
       ...user,
       isWorkerActive: !user.isWorkerActive,
@@ -107,7 +133,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, signIn, signOut, registerAsWorker, toggleWorkerActive }}>
+    <AuthContext.Provider value={{ user, isLoading, signIn, signOut, registerAsWorker, updateVerificationStatus, toggleWorkerActive }}>
       {children}
     </AuthContext.Provider>
   );

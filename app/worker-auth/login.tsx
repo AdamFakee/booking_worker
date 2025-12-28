@@ -26,8 +26,8 @@ export default function WorkerLoginScreen() {
     // Register as worker (skip KYC for demo)
     await registerAsWorker();
     
-    // Redirect to main app (tabs) instead of separate worker-home
-    router.replace('/(tabs)');
+    // Redirect to worker dashboard
+    router.replace('/worker-home' as any);
   };
 
   return (

@@ -1,8 +1,11 @@
 import ServiceBottomSheet from '@/components/ServiceBottomSheet';
 import { NewsCarousel } from '@/components/home/NewsCarousel';
+import WorkerChecklistWidget from '@/components/worker/WorkerChecklistWidget';
+import { useAuth } from '@/context/AuthContext';
 import { Link, useRouter } from 'expo-router';
 import {
   BellIcon,
+  Briefcase,
   Clock, // Updated: For Part-time
   GraduationCap,
   Hammer, // Updated: For Phổ thông
@@ -14,7 +17,7 @@ import {
   Zap // Keep for Điện nước
 } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Data for the 8-item grid - Updated to match design
@@ -40,6 +43,7 @@ const workersAround = [
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { user, toggleWorkerActive } = useAuth(); // Auth Hook
 
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
   const insets = useSafeAreaInsets();
@@ -108,6 +112,41 @@ export default function HomeScreen() {
 
       <ScrollView className="flex-1 bg-[#fefefe]" showsVerticalScrollIndicator={false}>
         
+        {/* WORKER DASHBOARD SECTION */}
+        {user.isWorker && (
+        <View className="px-5 mt-4">
+            {/* Online Status Toggle (Only if verified) */}
+            {(user.verificationStatus === 'verified' || user.verificationStatus === 'vip') && (
+                <View className="flex-row justify-between items-center mb-3 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                     <View className="flex-row items-center">
+                        <Briefcase size={18} color="#16A34A" />
+                        <Text className="font-bold text-gray-800 ml-2">Trạng thái làm việc</Text>
+                     </View>
+                     <View className="flex-row items-center">
+                             <Text className={`text-xs font-bold mr-2 ${user.isWorkerActive ? 'text-green-600' : 'text-gray-400'}`}>
+                                {user.isWorkerActive ? 'Đang nhận việc' : 'Đang nghỉ'}
+                             </Text>
+                             <Switch
+                                value={user.isWorkerActive}
+                                onValueChange={async () => {
+                                   if (user.verificationStatus !== 'verified' && user.verificationStatus !== 'vip') {
+                                        Alert.alert('Chưa kích hoạt', 'Vui lòng hoàn tất danh sách công việc phía trên để mở khóa tính năng nhận việc.');
+                                        return;
+                                   }
+                                   await toggleWorkerActive();
+                                }}
+                                trackColor={{ false: "#D1D5DB", true: "#16A34A" }}
+                                thumbColor="#FFFFFF"
+                                style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+                            />
+                     </View>
+                </View>
+            )}
+
+            <WorkerChecklistWidget />
+        </View>
+        )}
+
         {/* Service Grid Section */}
         <View className="px-5 mt-6">
           <Text className="text-lg font-bold text-gray-800 mb-4">Thợ & Lao động phổ biến</Text>

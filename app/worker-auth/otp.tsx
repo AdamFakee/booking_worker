@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, Lock } from 'lucide-react-native';
+import React, { useRef, useState } from 'react';
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useAuth } from '@/context/AuthContext';
 
 export default function OtpVerificationScreen() {
+  const { registerAsWorker } = useAuth(); // Import useAuth
   const router = useRouter();
   const { phone } = useLocalSearchParams();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -21,9 +24,10 @@ export default function OtpVerificationScreen() {
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     // Mock Verify
-    router.push('/worker-auth/kyc');
+    await registerAsWorker();
+    router.replace('/worker-home' as any);
   };
 
   const isFull = otp.every(d => d.length > 0);

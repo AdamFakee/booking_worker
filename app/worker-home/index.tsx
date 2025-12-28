@@ -1,6 +1,7 @@
+import WorkerChecklistWidget from '@/components/worker/WorkerChecklistWidget';
 import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
-import { Bell, Briefcase, LogOut, MapPin, Shield, User } from 'lucide-react-native';
+import { Bell, Briefcase, Lock, LogOut, MapPin, Shield, User } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, AppState, Linking, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,10 +10,12 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function WorkerHomeScreen() {
   const router = useRouter();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth(); // Added user to access status
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const appState = useRef(AppState.currentState);
-  const [isOnline, setIsOnline] = useState(true);
+  const [isOnline, setIsOnline] = useState(false); // Default false
+
+  const isVerified = user.verificationStatus === 'verified' || user.verificationStatus === 'vip';
 
   const checkPermissions = async () => {
     try {
@@ -77,6 +80,7 @@ export default function WorkerHomeScreen() {
   }
 
   if (hasPermission === false) {
+     // ... (Existing Permission Block)
      return (
         <SafeAreaView className="flex-1 px-6 justify-center items-center bg-white dark:bg-slate-950">
            <View className="w-20 h-20 bg-red-100 rounded-full items-center justify-center mb-6">
@@ -103,8 +107,6 @@ export default function WorkerHomeScreen() {
      );
   }
 
-  // ... (existing code)
-
   return (
     <SafeAreaView className="flex-1 bg-surface dark:bg-slate-950">
        {/* (Header remains same) */}
@@ -130,28 +132,45 @@ export default function WorkerHomeScreen() {
        </View>
 
        <ScrollView className="flex-1 px-5 pt-6">
+          {/* INSERT CHECKLIST WIDGET HERE */}
+          <WorkerChecklistWidget />
+
           {/* Status Card */}
           <View 
             className={`rounded-2xl p-5 mb-6 shadow-xl ${
-               isOnline ? 'bg-primary shadow-blue-500/30' : 'bg-gray-500 shadow-gray-500/30'
+               !isVerified ? 'bg-gray-400' :
+               isOnline ? 'bg-primary shadow-blue-500/30' : 'bg-gray-600 shadow-gray-500/30'
             }`}
           >
-             <Text className="text-blue-100 text-sm mb-1">Trạng thái hoạt động</Text>
+             <View className="flex-row justify-between items-start">
+               <Text className="text-white/80 text-sm mb-1">Trạng thái hoạt động</Text>
+               {!isVerified && <Lock size={16} color="white" opacity={0.8} />}
+             </View>
+             
              <View className="flex-row items-center justify-between">
                 <View>
                    <Text className="text-white text-2xl font-bold">
-                      {isOnline ? 'Đang nhận việc' : 'Đang ngoại tuyến'}
+                      {!isVerified ? 'Chưa kích hoạt' : (isOnline ? 'Đang nhận việc' : 'Đang ngoại tuyến')}
                    </Text>
-                   <Text className="text-blue-100 text-xs mt-1">
-                      {isOnline ? 'Sẵn sàng nhận việc mới' : 'Bạn sẽ không nhận được thông báo việc mới'}
+                   <Text className="text-white/80 text-xs mt-1">
+                      {!isVerified 
+                        ? 'Hoàn tất xác thực để bật nhận việc' 
+                        : (isOnline ? 'Sẵn sàng nhận việc mới' : 'Bạn sẽ không nhận được thông báo việc mới')}
                    </Text>
                 </View>
                 <Switch
                    trackColor={{ false: "#767577", true: "#81b0ff" }}
                    thumbColor={isOnline ? "#ffffff" : "#f4f3f4"}
                    ios_backgroundColor="#3e3e3e"
-                   onValueChange={() => setIsOnline(!isOnline)}
+                   onValueChange={() => {
+                        if (!isVerified) {
+                            Alert.alert('Chưa kích hoạt', 'Vui lòng hoàn tất danh sách công việc phía trên để mở khóa tính năng nhận việc.');
+                            return;
+                        }
+                        setIsOnline(!isOnline);
+                   }}
                    value={isOnline}
+                   disabled={!isVerified}
                    style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
                 />
              </View>
