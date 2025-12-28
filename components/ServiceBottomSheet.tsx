@@ -3,16 +3,16 @@ import { Search, Star, X } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Animated,
-  Dimensions,
-  Image,
-  Modal,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View
+    Animated,
+    Dimensions,
+    Image,
+    Modal,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 
 const { height } = Dimensions.get('window');
@@ -62,7 +62,7 @@ const WORKERS: Record<string, {
 interface ServiceBottomSheetProps {
   visible: boolean;
   onClose: () => void;
-  service: { title: string; icon: any; color: string; iconColor: string } | null;
+  service: { title: string; icon: any; color: string } | null;
 }
 
 export default function ServiceBottomSheet({ visible, onClose, service }: ServiceBottomSheetProps) {
@@ -139,10 +139,15 @@ export default function ServiceBottomSheet({ visible, onClose, service }: Servic
                 {/* Header Info */}
                 <View className="px-5 pb-4 flex-row items-center border-b border-gray-100 dark:border-gray-800">
                     <View 
-                       className="w-16 h-16 rounded-full items-center justify-center mr-4"
+                       className="w-16 h-16 rounded-full items-center justify-center mr-4 overflow-hidden"
                        style={{ backgroundColor: service?.color || '#F5F5F5' }}
                     >
-                        {service?.icon && <service.icon size={32} color={service.iconColor} />}
+                        {service?.icon && (
+                          <Image 
+                            source={service.icon} 
+                            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                          />
+                        )}
                     </View>
                     <View className="flex-1">
                         <Text className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Thợ</Text>

@@ -3,30 +3,23 @@ import { NewsCarousel } from '@/components/home/NewsCarousel';
 import { useRouter } from 'expo-router';
 import {
   BellIcon,
-  Clock, // Updated: For Part-time
-  GraduationCap,
-  Hammer, // Updated: For Phổ thông
-  HardHat, // Updated: For Công nhân
-  MoreHorizontal,
+  HardHat, // Kept for map markers
   Search,
-  ShoppingBag, // Updated: For Giúp việc, bán hàng
-  Snowflake,
-  Zap // Keep for Điện nước
 } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// Data for the 8-item grid - Updated to match design
+// Data for the 8-item grid - Updated with PNG icons
 const services = [
-  { id: '1', title: 'Điện nước', icon: Zap, color: '#E3F2FD', iconColor: '#42A5F5' }, // Blue
-  { id: '2', title: 'Công nhân', icon: HardHat, color: '#FFF3E0', iconColor: '#FF7043' }, // Orange - Changed to HardHat
-  { id: '3', title: 'Điện lạnh', icon: Snowflake, color: '#E8F5E9', iconColor: '#66BB6A' }, // Green
-  { id: '4', title: 'Giúp việc, bán hàng', icon: ShoppingBag, color: '#FCE4EC', iconColor: '#EC407A' }, // Pink - Changed to ShoppingBag
-  { id: '5', title: 'Sinh viên', icon: GraduationCap, color: '#E0F7FA', iconColor: '#26C6DA' }, // Cyan
-  { id: '6', title: 'Part-time', icon: Clock, color: '#F3E5F5', iconColor: '#AB47BC' }, // Purple - Changed to Clock
-  { id: '7', title: 'Phổ thông', icon: Hammer, color: '#EFEBE9', iconColor: '#8D6E63' }, // Brown - Changed to Hammer
-  { id: '8', title: '...', icon: MoreHorizontal, color: '#F5F5F5', iconColor: '#757575' }, // Grey
+  { id: '1', title: 'Điện nước', icon: require('../../assets/icons/worker commons/điện nước.png'), color: '#E3F2FD' }, // Blue
+  { id: '2', title: 'Công nhân', icon: require('../../assets/icons/worker commons/công nhân.png'), color: '#FFF3E0' }, // Orange
+  { id: '3', title: 'Điện lạnh', icon: require('../../assets/icons/worker commons/điện lạnh.png'), color: '#E8F5E9' }, // Green
+  { id: '4', title: 'Giúp việc, bán hàng', icon: require('../../assets/icons/worker commons/giúp việc, bán hàng.png'), color: '#FCE4EC' }, // Pink
+  { id: '5', title: 'Sinh viên', icon: require('../../assets/icons/worker commons/sinh viên.png'), color: '#E0F7FA' }, // Cyan
+  { id: '6', title: 'Part-time', icon: require('../../assets/icons/worker commons/part-time.png'), color: '#F3E5F5' }, // Purple
+  { id: '7', title: 'Phổ thông', icon: require('../../assets/icons/worker commons/lao động phổ thông.png'), color: '#EFEBE9' }, // Brown
+  { id: '8', title: 'Xem thêm', icon: require('../../assets/icons/worker commons/xem thêm.png'), color: '#F5F5F5' }, // Grey
 ];
 
 // Mock Data for Map Markers (Keep existing)
@@ -120,10 +113,13 @@ export default function HomeScreen() {
                 onPress={() => setSelectedService(service)}
               >
                 <View 
-                  className="w-14 h-14 rounded-2xl items-center justify-center mb-2 shadow-sm"
+                  className="w-14 h-14 rounded-2xl items-center justify-center mb-2 shadow-sm overflow-hidden"
                   style={{ backgroundColor: service.color }}
                 >
-                  <service.icon size={26} color={service.iconColor} strokeWidth={1.5} />
+                  <Image 
+                    source={service.icon} 
+                    style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+                  />
                 </View>
                 <Text 
                   className="text-xs text-center font-medium text-gray-700 leading-4"
