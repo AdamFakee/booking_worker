@@ -18,9 +18,8 @@ export default function RoleSelectionScreen() {
     }
   }, [user.isLoggedIn, isLoading, router]);
 
-  const handleLogin = () => {
-    signIn(); // Login as customer (default)
-    router.replace('/(tabs)');
+  const handleCustomerLogin = () => {
+    router.push('/auth/login');
   };
 
   if (isLoading) {
@@ -53,7 +52,7 @@ export default function RoleSelectionScreen() {
         {/* Customer Button */}
         <TouchableOpacity 
           className="flex-row items-center p-5 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800 active:scale-95 transition-transform"
-          onPress={handleLogin}
+          onPress={handleCustomerLogin}
           activeOpacity={0.8}
         >
           <View className="w-14 h-14 bg-blue-500 rounded-full items-center justify-center mr-4 shadow-md shadow-blue-300">
