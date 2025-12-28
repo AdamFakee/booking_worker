@@ -10,8 +10,8 @@ import { FlatList, Image, Text, TextInput, TouchableOpacity, View } from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const suggestions = [
-  "máy lạnh", "máy giặt", "tủ lạnh", "đèn", "điện", 
-  "ống nước", "lavabo", "bồn cầu", "mái tôn", "máy bơm"
+  "sinh viên part-time", "giúp việc theo giờ", "bán hàng", 
+  "bảo vệ", "thợ điện", "tạp vụ"
 ];
 
 // Mock data for search results
@@ -63,7 +63,7 @@ export default function SearchScreen() {
         {/* Suggestions */}
         <View className="mt-3">
           <Text className="text-caption text-gray-500 italic leading-5">
-            Gợi ý: {suggestions.join(', ')},...
+            Gợi ý: {suggestions.join(' • ')}
           </Text>
         </View>
 
