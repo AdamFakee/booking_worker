@@ -11,7 +11,7 @@ interface UserData {
 interface AuthContextType {
   user: UserData;
   isLoading: boolean;
-  signIn: () => Promise<void>;
+  signIn: (token?: string, user?: any) => Promise<void>;
   signOut: () => Promise<void>;
   registerAsWorker: () => Promise<void>; // After ID verification
   toggleWorkerActive: () => Promise<void>; // Toggle worker active status
@@ -64,12 +64,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signIn = async () => {
+  const signIn = async (token?: string, user?: any) => {
     const newUserData: UserData = {
       isLoggedIn: true,
-      isWorker: false,
-      isWorkerActive: false,
+      isWorker: user?.is_worker || false,
+      isWorkerActive: user?.is_worker_active || false,
     };
+    if (token) {
+        // Store token if needed, or put in userData
+        // For simplicity, just storing userData for now or save token separately
+        await AsyncStorage.setItem('auth_token', token);
+    }
     await saveUserData(newUserData);
   };
 

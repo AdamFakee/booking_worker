@@ -5,16 +5,52 @@ import React, { useState } from 'react';
 import { Alert, Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import { authService } from '@/services/auth';
+
+WebBrowser.maybeCompleteAuthSession();
+
 export default function LoginScreen() {
   const router = useRouter();
   const { signIn } = useAuth();
   const [agreed, setAgreed] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleLoginSuccess = async () => {
-    await signIn();
-    router.replace('/(tabs)');
-  };
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: '516777550905-ku6coqlh72302k2jdivdb0j2mknedqoh.apps.googleusercontent.com',
+    iosClientId: 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com',
+    // androidClientId: '516777550905-ppp779piadag0l32o38od8f8grnaldvl.apps.googleusercontent.com',
+    redirectUri: 'https://auth.expo.io/@adamfakee/worker',
+  });
+
+  React.useEffect(() => {
+    // Debug redirect URI if needed
+    // if (request) console.log('Current Redirect URI:', request.redirectUri);
+  }, [request]);
+
+  React.useEffect(() => {
+    const handleGoogleLogin = async (idToken: string) => {
+      try {
+          const res = await authService.googleLogin(idToken);
+          if (res.success) {
+              await signIn(res.token, res.user);
+              Alert.alert('Thành công', 'Đăng nhập Google thành công', [
+                  { text: 'OK', onPress: () => router.replace('/(tabs)') }
+              ]);
+          } else {
+              Alert.alert('Lỗi', 'Đăng nhập Google thất bại');
+          }
+      } catch (error) {
+          Alert.alert('Lỗi', 'Có lỗi xảy ra khi kết nối Google');
+      }
+    };
+
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
+      handleGoogleLogin(id_token);
+    }
+  }, [response, router, signIn]);
 
   const checkAgreement = () => {
       if (!agreed) {
@@ -30,10 +66,14 @@ export default function LoginScreen() {
       }
   };
 
-  const handleSocialLogin = (provider: string) => {
-    if (checkAgreement()) {
-        Alert.alert('Chức năng Demo', `Đăng nhập bằng ${provider} thành công!`, [
-            { text: 'OK', onPress: handleLoginSuccess }
+  const handleSocialLogin = async (provider: string) => {
+    if (!checkAgreement()) return;
+
+    if (provider === 'Google') {
+        promptAsync();
+    } else {
+        Alert.alert('Chức năng Demo', `Đăng nhập bằng ${provider} chưa khả dụng.`, [
+            { text: 'OK' }
         ]);
     }
   };

@@ -1,4 +1,5 @@
 import { useAuth } from '@/context/AuthContext';
+import { authService } from '@/services/auth';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Lock } from 'lucide-react-native';
 import React, { useRef, useState } from 'react';
@@ -13,12 +14,17 @@ export default function OtpScreen() {
   const [step, setStep] = useState(1); // 1: Input Phone, 2: Input OTP
   const inputs = useRef<TextInput[]>([]);
 
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     if (phone.length < 9) {
         Alert.alert('Lỗi', 'Số điện thoại không hợp lệ');
         return;
     }
-    setStep(2);
+    try {
+        await authService.login(phone);
+        setStep(2);
+    } catch (error) {
+        Alert.alert('Lỗi', 'Không thể gửi mã xác thực. Vui lòng thử lại.');
+    }
   };
 
   const handleOtpChange = (text: string, index: number) => {
@@ -32,12 +38,19 @@ export default function OtpScreen() {
   };
 
   const verifyOtp = async () => {
-     Alert.alert('Thành công', 'Đăng nhập thành công', [
-         { text: 'Trải nghiệm ngay', onPress: async () => {
-             await signIn();
-             router.replace('/(tabs)');
-         }}
-     ]);
+    try {
+        const res = await authService.verify(phone, otp.join(''));
+        if (res.success) {
+            await signIn(res.token, res.user);
+            Alert.alert('Thành công', 'Đăng nhập thành công', [
+                { text: 'OK', onPress: () => router.replace('/(tabs)') }
+            ]);
+        } else {
+            Alert.alert('Lỗi', res.message || 'Mã xác thực không đúng');
+        }
+    } catch (error) {
+        Alert.alert('Lỗi', 'Có lỗi xảy ra khi xác thực');
+    }
   };
 
   return (
