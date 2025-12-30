@@ -1,14 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { ArrowLeft, Lock } from 'lucide-react-native';
+
+import { workerAuthService } from '@/services/workerAuth';
 
 export default function OtpVerificationScreen() {
   const router = useRouter();
   const { phone } = useLocalSearchParams();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputs = useRef<TextInput[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleOtpChange = (text: string, index: number) => {
     const newOtp = [...otp];
@@ -21,9 +24,32 @@ export default function OtpVerificationScreen() {
     }
   };
 
-  const handleVerify = () => {
-    // Mock Verify
-    router.push('/worker-auth/kyc');
+  const handleVerify = async () => {
+    try {
+      setLoading(true);
+      const otpValue = otp.join('');
+      const response = await workerAuthService.verifyOtp(phone as string, otpValue);
+      
+      if (response.success) {
+        router.push({ pathname: '/worker-auth/kyc', params: { phone: phone } });
+      } else {
+        alert('Mã xác thực không đúng');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Có lỗi xảy ra, vui lòng thử lại');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      await workerAuthService.sendOtp(phone as string);
+      alert('Đã gửi lại mã xác thực');
+    } catch (error) {
+      alert('Gửi lại mã thất bại');
+    }
   };
 
   const isFull = otp.every(d => d.length > 0);
@@ -68,14 +94,18 @@ export default function OtpVerificationScreen() {
         <TouchableOpacity 
           className={`w-full py-4 rounded-xl items-center shadow-lg ${isFull ? 'bg-amber-400 shadow-amber-200' : 'bg-gray-200 dark:bg-slate-800'}`}
           onPress={handleVerify}
-          disabled={!isFull}
+          disabled={!isFull || loading}
         >
-          <Text className={`font-bold text-lg ${isFull ? 'text-white' : 'text-gray-400 dark:text-gray-500'}`}>
-            Xác thực
-          </Text>
+          {loading ? (
+             <ActivityIndicator color="#fff" />
+          ) : (
+             <Text className={`font-bold text-lg ${isFull ? 'text-white' : 'text-gray-400 dark:text-gray-500'}`}>
+                Xác thực
+             </Text>
+          )}
         </TouchableOpacity>
 
-        <TouchableOpacity className="mt-6">
+        <TouchableOpacity className="mt-6" onPress={handleResend}>
           <Text className="text-primary font-bold">Gửi lại mã</Text>
         </TouchableOpacity>
 

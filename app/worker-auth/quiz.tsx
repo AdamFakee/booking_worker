@@ -1,42 +1,65 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { AlertTriangle, CheckCircle } from 'lucide-react-native';
-import React, { useState } from 'react';
-import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Modal, ScrollView, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth } from '@/context/AuthContext';
-// ... imports
-
-const MOCK_QUIZ = [
-  { question: "Khi lắp đặt ổ cắm điện, dây nóng (L) thường có màu gì?", options: ["Xanh dương", "Đỏ hoặc Nâu", "Vàng sọc xanh", "Trắng"], correct: 1 },
-  { question: "Thiết bị bảo vệ quá tải và ngắn mạch gia đình là gì?", options: ["Cầu dao", "Aptomat (CB)", "Công tắc", "Rơ le"], correct: 1 },
-  { question: "Dòng điện 30mA qua cơ thể người có thể gây ra hậu quả gì?", options: ["Không cảm giác", "Co giật cơ, khó thở", "Ngừng tim ngay lập tức", "Chỉ tê nhẹ"], correct: 1 },
-  { question: "Khi sửa chữa điện, bước đầu tiên quan trọng nhất là gì?", options: ["Mặc đồ bảo hộ", "Ngắt nguồn điện và kiểm tra", "Chuẩn bị kìm, tuốc nơ vít", "Thông báo cho chủ nhà"], correct: 1 },
-  { question: "Hiện tượng ngắn mạch xảy ra khi nào?", options: ["Dây nóng chạm dây nguội", "Dòng điện quá nhỏ", "Điện áp tăng cao", "Dây nối đất bị đứt"], correct: 0 },
-];
+import { workerAuthService } from '@/services/workerAuth';
 
 export default function WorkerQuizScreen() {
   const router = useRouter();
   const { user, signIn, registerAsWorker } = useAuth();
-  const { job } = useLocalSearchParams();
+  const { job, phone, name } = useLocalSearchParams();
+  const [questions, setQuestions] = useState<any[]>([]);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]); 
   const [showResult, setShowResult] = useState(false);
   const [passed, setPassed] = useState(false);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      try {
+        console.log(`[QUIZ] Starting quiz for user: ${name} (${phone}) with jobs:`, job);
+        let jobs: string[] = [];
+        if (typeof job === 'string') {
+          try {
+             jobs = JSON.parse(job);
+          } catch {
+             jobs = [job];
+          }
+        } else if (Array.isArray(job)) {
+            jobs = job;
+        }
+
+        const res = await workerAuthService.getQuiz(jobs);
+        if (res.success && res.data) {
+            setQuestions(res.data);
+        }
+      } catch (error) {
+          console.error('Fetch quiz error', error);
+          alert('Không thể tải bộ câu hỏi');
+      } finally {
+          setLoading(false);
+      }
+    };
+    fetchQuiz();
+  }, [job, name, phone]);
 
   const handleAnswer = (optionIndex: number) => {
     const newAnswers = [...answers, optionIndex];
     setAnswers(newAnswers);
 
-    if (currentQ < MOCK_QUIZ.length - 1) {
+    if (currentQ < questions.length - 1) {
       setCurrentQ(currentQ + 1);
     } else {
       let correctCount = 0;
       newAnswers.forEach((ans, idx) => {
-        if (ans === MOCK_QUIZ[idx].correct) correctCount++;
+        if (ans === questions[idx].correct) correctCount++;
       });
-      const finalScore = Math.round((correctCount / MOCK_QUIZ.length) * 100);
+      const finalScore = Math.round((correctCount / questions.length) * 100);
       setScore(finalScore);
       setPassed(finalScore >= 70);
       setShowResult(true);
@@ -68,16 +91,26 @@ export default function WorkerQuizScreen() {
     <SafeAreaView className="flex-1 bg-white dark:bg-slate-950">
        <View className="px-5 py-4 border-b border-gray-100 dark:border-gray-800 flex-row justify-between items-center">
          <Text className="text-xl font-bold text-gray-900 dark:text-white">Kiểm tra kiến thức</Text>
-         <Text className="text-primary font-bold">{currentQ + 1}/{MOCK_QUIZ.length}</Text>
+         <Text className="text-primary font-bold">{currentQ + 1}/{questions.length}</Text>
        </View>
 
+       {loading ? (
+        <View className="flex-1 justify-center items-center">
+            <ActivityIndicator size="large" color="#0068FF" />
+            <Text className="mt-4 text-gray-500">Đang tải câu hỏi...</Text>
+        </View>
+       ) : questions.length === 0 ? (
+        <View className="flex-1 justify-center items-center px-10">
+            <Text className="text-center text-gray-500">Không tìm thấy câu hỏi phù hợp cho ngành nghề đã chọn.</Text>
+        </View>
+       ) : (
        <ScrollView className="flex-1 px-5 pt-8">
-          <Text className="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase font-bold tracking-widest">{job || 'Kỹ năng chung'}</Text>
+          <Text className="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase font-bold tracking-widest">Câu hỏi chuyên môn</Text>
           <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-8 leading-9">
-            {MOCK_QUIZ[currentQ].question}
+            {questions[currentQ].question}
           </Text>
 
-          {MOCK_QUIZ[currentQ].options.map((option, index) => (
+          {questions[currentQ].options.map((option: string, index: number) => (
             <TouchableOpacity 
               key={index}
               className="border border-gray-200 dark:border-gray-700 rounded-2xl p-5 mb-4 active:bg-blue-50 dark:active:bg-blue-900/20 active:border-blue-500"
@@ -96,6 +129,7 @@ export default function WorkerQuizScreen() {
             </TouchableOpacity>
           </View>
        </ScrollView>
+       )}
 
        {/* Result Modal */}
        <Modal visible={showResult} transparent animationType="slide">

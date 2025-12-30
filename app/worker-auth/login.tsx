@@ -1,20 +1,32 @@
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Phone } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth } from '@/context/AuthContext';
+import { workerAuthService } from '@/services/workerAuth';
 
 export default function WorkerLoginScreen() {
   const router = useRouter();
   const { user, signIn, registerAsWorker } = useAuth();
   const [phone, setPhone] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSendCode = () => {
+  const handleSendCode = async () => {
     // Basic validation
     if (phone.length < 9) return;
-    router.push({ pathname: '/worker-auth/otp', params: { phone } });
+    
+    try {
+      setLoading(true);
+      await workerAuthService.sendOtp(phone);
+      router.push({ pathname: '/worker-auth/otp', params: { phone } });
+    } catch (error) {
+      alert('Gửi mã OTP thất bại, vui lòng thử lại');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSkipDemo = async () => {
@@ -69,11 +81,15 @@ export default function WorkerLoginScreen() {
           <TouchableOpacity 
             className={`w-full py-4 rounded-xl items-center shadow-lg ${phone.length > 8 ? 'bg-amber-400 shadow-amber-200' : 'bg-gray-200 dark:bg-slate-800'}`}
             onPress={handleSendCode}
-            disabled={phone.length <= 8}
+            disabled={phone.length <= 8 || loading}
           >
-            <Text className={`font-bold text-lg ${phone.length > 8 ? 'text-white' : 'text-gray-400 dark:text-gray-500'}`}>
-              Tiếp tục
-            </Text>
+            {loading ? (
+                <ActivityIndicator color="#fff" />
+            ) : (
+                <Text className={`font-bold text-lg ${phone.length > 8 ? 'text-white' : 'text-gray-400 dark:text-gray-500'}`}>
+                Tiếp tục
+                </Text>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity 

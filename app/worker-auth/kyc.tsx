@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Camera, CheckCircle, Upload } from 'lucide-react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { workerAuthService } from '@/services/workerAuth';
 
 export default function KYCScreen() {
   const router = useRouter();
+  const { phone } = useLocalSearchParams();
   const [images, setImages] = useState<{ portrait: string | null, front: string | null, back: string | null }>({
     portrait: null,
     front: null,
@@ -31,6 +32,21 @@ export default function KYCScreen() {
 
   const isComplete = images.portrait && images.front && images.back;
 
+  const handleContinue = async () => {
+    try {
+        setLoading('submitting');
+        // In real app, we would upload images here using FormData
+        // For now sending mock data as per plan
+        await workerAuthService.verifyIdentity(phone as string, images); 
+        router.push({ pathname: '/worker-auth/info', params: { phone } });
+    } catch (error) {
+        console.error(error);
+        alert('Xác thực thất bại, thử lại sau');
+    } finally {
+        setLoading(null);
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-slate-950">
        <View className="px-5 py-4 border-b border-gray-100 dark:border-gray-800">
@@ -41,6 +57,7 @@ export default function KYCScreen() {
           <Text className="text-center text-gray-500 dark:text-gray-400 mb-6">
             Vui lòng cung cấp hình ảnh chân dung và căn cước công dân để hoàn tất hồ sơ.
           </Text>
+
 
           {/* Portrait */}
           <View className="mb-6">
@@ -116,11 +133,11 @@ export default function KYCScreen() {
 
           <TouchableOpacity 
             className={`w-full py-4 rounded-xl items-center shadow-lg mb-10 ${isComplete ? 'bg-amber-400 shadow-amber-200' : 'bg-gray-200 dark:bg-slate-800'}`}
-            onPress={() => router.push('/worker-auth/info')}
-            disabled={!isComplete}
+            onPress={handleContinue}
+            disabled={!isComplete || !!loading}
           >
             <Text className={`font-bold text-lg ${isComplete ? 'text-white' : 'text-gray-400 dark:text-gray-500'}`}>
-              Tiếp tục
+              {loading === 'submitting' ? 'Đang xử lý...' : 'Tiếp tục'}
             </Text>
           </TouchableOpacity>
        </ScrollView>
